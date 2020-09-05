@@ -1,0 +1,58 @@
+import os
+import sys
+import subprocess
+from pathlib import Path
+
+root_path = os.path.split(os.path.abspath(__file__))[0]
+module_path = os.path.join(root_path, "..", "..", "gpstime")
+
+present_module = None
+present_loc = None
+
+for i, path in enumerate(Path(module_path).rglob('*.py')):
+    result = subprocess.run(["pydocstyle", str(path)], stdout=subprocess.PIPE)
+    out = str(result.stdout).split("\\n")
+
+    pairs = [(out[i], out[i+1]) for i in range(0, len(out) - 1, 2)]
+
+    for p in pairs:
+        description = p[1]
+        module, location, _ = p[0].strip().split(":")
+        if module[0] == "b":
+            module = module[2:]
+        module = os.path.relpath(module, module_path)
+        if module != present_module:
+            present_module = module
+            print("\n" + present_module)
+            print("-" * 80)
+        #print()location.split(" "))
+        #line, _, _, _type, obj = location.split(" ")
+        parts = location.split(" ")
+        if parts[2] == "module":
+            line = parts[0]
+            print(f"\tLine {line}: {description.strip()}")
+
+        else:
+            line, _, _, _type, obj = parts
+            obj = obj[1:-1]
+            new_loc = ""
+            if _type == "class":
+                new_loc = obj
+            elif _type == "method":
+                if present_loc is not None:
+                    #_class = present_loc.split(".")[0]
+                    new_loc = obj#".".join([_class, obj])
+                else:
+                    new_loc = obj
+            elif _type == "function":
+                new_loc = obj
+            else:
+                raise ValueError(f"Unknown type: {_type}")
+            if new_loc != present_loc:
+                print("\n\t" + ("=" * 20) + " " + new_loc + " " + "=" * 20)
+            print(f"\tLine {line}: {description.strip()}")
+            present_loc = new_loc
+
+    # if i == 35:        
+    #     break
+print()
