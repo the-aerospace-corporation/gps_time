@@ -7,6 +7,9 @@ from __future__ import annotations
 __all__ = ['logger', 'GPSTime']
 
 # Cell
+"""Copyright 2020 The Aerospace Corporation"""
+
+# Cell
 #nbdev_comment from __future__ import annotations
 import datetime
 

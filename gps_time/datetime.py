@@ -4,6 +4,9 @@ __all__ = ['correct_week', 'arange_datetime', 'tow2datetime', 'datetime2tow', 't
            'datetime2zcount', 'zcount2datetime']
 
 # Cell
+"""Copyright 2020 The Aerospace Corporation"""
+
+# Cell
 import datetime
 import numpy as np
 

@@ -3,6 +3,9 @@
 __all__ = ['logger', 'LeapSeconds', 'gps2utc', 'gps2utc', 'utc2gps']
 
 # Cell
+"""Copyright 2020 The Aerospace Corporation"""
+
+# Cell
 import datetime
 
 from .core import GPSTime

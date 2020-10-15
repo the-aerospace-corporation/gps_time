@@ -3,6 +3,9 @@
 __all__ = ['logger', 'arange_gpstime', 'validate_gps_week']
 
 # Cell
+"""Copyright 2020 The Aerospace Corporation"""
+
+# Cell
 
 import numpy as np
 

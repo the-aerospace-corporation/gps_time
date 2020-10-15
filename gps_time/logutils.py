@@ -4,6 +4,9 @@ __all__ = ['display_distro_statement', 'Colors', 'ThemeField', 'color_text', 'Ba
            'AlignedColorFormatter']
 
 # Cell
+"""Copyright 2020 The Aerospace Corporation"""
+
+# Cell
 import os
 import logging
 
