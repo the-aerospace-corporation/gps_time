@@ -1,6 +1,4 @@
-# Title
-
-
+# Time Representation for GPS Applications
 
 Copyright 2020 The Aerospace Corporation
 
