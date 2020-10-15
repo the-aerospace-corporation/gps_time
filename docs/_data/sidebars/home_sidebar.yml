@@ -7,24 +7,24 @@ entries:
 - folders:
   - folderitems:
     - output: web,pdf
-      title: Export to modules
-      url: /export.html
+      title: Overview
+      url: /
     - output: web,pdf
-      title: Convert to html
-      url: /export2html.html
+      title: GPSTime Core Module
+      url: core.html
     - output: web,pdf
-      title: Show doc
-      url: /showdoc.html
+      title: Leap Second Information
+      url: leapseconds.html
     - output: web,pdf
-      title: Test functions
-      url: /test.html
+      title: GPSTime Utilities Model
+      url: utilities.html
     - output: web,pdf
-      title: Core functions
-      url: /core.html
+      title: Logging Utilities
+      url: logutils.html
     - output: web,pdf
-      title: Command line functions
-      url: /cli.html
+      title: Datetime Interface Tools
+      url: datetime.html
     output: web
-    title: Notebook
+    title: gps_time
   output: web
   title: Sidebar
