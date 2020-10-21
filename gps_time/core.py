@@ -46,7 +46,7 @@ class GPSTime:
 
     """
 
-    _SEC_IN_WEEK = 604800
+    _SEC_IN_WEEK: int = 604800
 
     def __init__(self, week_number: int, time_of_week: Union[int, float]) -> None:
         """Object constructor.

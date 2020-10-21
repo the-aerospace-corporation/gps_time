@@ -1,18 +1,14 @@
-# Time Representation for GPS Applications
-
-Copyright 2020 The Aerospace Corporation
-
 # gps_time
-
 > Tools for handling time related to GPS
 
-This module is used to represent GPS time and provide tools for handling it. The tools developed here were originally made in pure python, but were later converted to jupyter notebooks using `nbdev`
+
+This module is used to represent GPS time and provide tools for handling it. The tools developed here were originally made in pure python, but were later converted to jupyter notebooks using `nbdev`. The goal is to provide an absolute time representation for python that is easer to use for scientific computing and with higher resolution than the built-in `datetime`.
 
 ## Install
 
 Installation can be achieved using `pip`, specifically
 ```bash
-pip install gps_time
+pip install gps-time
 ```
 
 ## How to use
