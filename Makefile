@@ -22,12 +22,12 @@ test:
 	pytest --cov-config=.coveragerc --cov-report term-missing --cov=gps_time --profile
 
 release: pypi
-	nbdev_bump_version
 
 pypi: dist
 	twine upload --repository pypi dist/*
 
 dist: clean
+	nbdev_bump_version
 	python setup.py sdist bdist_wheel
 
 clean:
