@@ -15,14 +15,14 @@ pip install gps-time
 
 This module is relatively straightfoward to use. The `GPSTime` objects are generated (using arbitrary numbers) by
 
-```python
+```
 gps_time1 = GPSTime(week_number=1872, time_of_week=3324.654324324234324)
 gps_time2 = GPSTime(week_number=1875, time_of_week=9890874.32)
 ```
 
 Notice that the time of week for `gps_time2` is longer than a week. The `GPSTime` object will automatically adjust the week number and time of week to reasonable values.
 
-```python
+```
 gps_time2
 ```
 
@@ -37,7 +37,7 @@ gps_time2
 
 The `GPSTime` objects can also created from `datetime.datetime` objects
 
-```python
+```
 gps_time3 = GPSTime.from_datetime(datetime.datetime(2017, 9, 2, 13, 23, 12, 211423))
 print(gps_time3)
 ```
@@ -47,7 +47,7 @@ print(gps_time3)
 
 `GPSTime` can likewise be converted to `datetime.datetime` object. However, one must be careful because `datetime.datetime` objects only preserve microsecond resolution. Converting from `GPSTime` to `datetime.datetime` can lose information. The opposite conversion does not lose information.
 
-```python
+```
 print(f"GPS Time: {gps_time1}")
 print(f"Datetime: {gps_time1.to_datetime()}")
 print("")
@@ -65,7 +65,7 @@ print(f"Lost Precision: {gps_time1 - GPSTime.from_datetime(gps_time1.to_datetime
 
 For floats, it is interpreted as a time shift in seconds (forward for addition, backward for subtraction). This operation accounts for the time of week. In-place addition and subtraction, i.e. the `+=` and `-=` operators are supported for floats.
 
-```python
+```
 time_shift_seconds = 23431123.3243
 
 print(f"Addition (float):    {gps_time2 + time_shift_seconds}")
@@ -78,7 +78,7 @@ print(f"Subtraction (float): {gps_time2 - time_shift_seconds}")
 
 Alternatively, addition and subtraction can be done using two `GPSTime` objects. Subtraction finds the time difference in seconds (as a float). Addition essentially sums the week numbers and times of week. Notice that in-place addition and subtraction are not supported for two `GPSTime` objects.
 
-```python
+```
 print(f"Addition (GPSTime):    {gps_time2 + gps_time1}")
 print(f"Subtraction (GPSTime): {gps_time2 - gps_time1}")
 ```

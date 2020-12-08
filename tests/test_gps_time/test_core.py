@@ -6,9 +6,6 @@ import numpy as np
 from gps_time.core import GPSTime
 from gps_time.datetime import datetime2tow
 
-def test_GPSTime_sec_in_week():
-    assert GPSTime._SEC_IN_WEEK == 60 * 60 * 24 * 7
-
 
 def test_GPSTime_constructor():
     t = GPSTime(1500, 604799)
@@ -17,6 +14,56 @@ def test_GPSTime_constructor():
     t = GPSTime(1500, 604800)
     assert t.week_number == 1501, "Weeknum not properly calculated"
     assert t.time_of_week == 0, "Tow not properly calculated"
+
+def test_GPSTime_constructor_input_arguments():
+    t = GPSTime(1500, 604799, 9e14)
+    assert t.week_number == 1500, "Weeknum not properly calculated"
+    assert t.time_of_week == 604799.9, "Tow not properly calculated"
+    assert t.seconds == 604799, "seconds not properly calculated"
+    assert t.femtoseconds == 9e14, "femtoseconds not properly calculated"
+
+    # Loses femtosecond accuracy
+    t = GPSTime(1500, 604799.9)
+    assert t.week_number == 1500, "Weeknum not properly calculated"
+    assert t.time_of_week == 604799.9, "Tow not properly calculated"
+    assert t.seconds == 604799, "seconds not properly calculated"
+    assert np.isclose(t.femtoseconds, 9e14), "femtoseconds not properly calculated"
+
+    t = GPSTime(1500, seconds=604799, femtoseconds=9e14)
+    assert t.week_number == 1500, "Weeknum not properly calculated"
+    assert t.time_of_week == 604799.9, "Tow not properly calculated"
+    assert t.seconds == 604799, "seconds not properly calculated"
+    assert t.femtoseconds == 9e14, "femtoseconds not properly calculated"
+
+
+    t = GPSTime(1500, femtoseconds=9e14, seconds=604799)
+    assert t.week_number == 1500, "Weeknum not properly calculated"
+    assert t.time_of_week == 604799.9, "Tow not properly calculated"
+    assert t.seconds == 604799, "seconds not properly calculated"
+    assert t.femtoseconds == 9e14, "femtoseconds not properly calculated"
+
+    # These will not produce accurate results at the femtosecond level
+    t = GPSTime(1500, seconds=604799.9)
+    assert t.week_number == 1500, "Weeknum not properly calculated"
+    assert t.time_of_week == 604799.9, "Tow not properly calculated"
+    assert t.seconds == 604799, "seconds not properly calculated"
+    assert np.isclose(t.femtoseconds, 9e14), "femtoseconds not properly calculated"
+
+    t = GPSTime(1500, time_of_week=604799.9)
+    assert t.week_number == 1500, "Weeknum not properly calculated"
+    assert t.time_of_week == 604799.9, "Tow not properly calculated"
+    assert t.seconds == 604799, "seconds not properly calculated"
+    assert np.isclose(t.femtoseconds, 9e14), "femtoseconds not properly calculated"
+
+    with pytest.raises(ValueError):
+       t = GPSTime(1500, 1, 2, 3)
+    
+
+    with pytest.raises(ValueError):
+       t = GPSTime(1500, time_of_week=1.0, seconds=2, femtoseconds=3)
+
+    with pytest.raises(ValueError):
+        t = GPSTime(1500, time_of_week=604799, femtoseconds=9e14)
 
 
 def test_GPSTime_to_datetime():

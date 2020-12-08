@@ -61,7 +61,7 @@ nb_path: "nbs/00_core.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="The-GPSTime-Class">The GPSTime Class<a class="anchor-link" href="#The-GPSTime-Class"> </a></h2><p>The primary class for this module is, unsurprisingly, the <a href="/gps_time/core.html#GPSTime"><code>GPSTime</code></a> class. This class has two public attributes, the <code>week_number</code> and the <code>time_of_week</code>. The week number is the number of weeks since the start of the GPS epoch, 6 January 1980. The time of week is the number of seconds since the start of the GPS week (starting midnight Saturday night/Sunday morning).</p>
+<h2 id="Parameters-and-Helper-Functions">Parameters and Helper Functions<a class="anchor-link" href="#Parameters-and-Helper-Functions"> </a></h2><p>The following parameters are useful values that will be used regularly within this module.</p>
 
 </div>
 </div>
@@ -73,6 +73,28 @@ nb_path: "nbs/00_core.ipynb"
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This function is used to convert a time as a float into integer seconds and femtoseconds</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="The-GPSTime-Class">The GPSTime Class<a class="anchor-link" href="#The-GPSTime-Class"> </a></h2><p>The primary class for this module is, unsurprisingly, the <a href="/gps_time/core.html#GPSTime"><code>GPSTime</code></a> class. This class has three public attributes, the <code>week_number</code>, <code>seconds</code>, and <code>femtoseconds</code>. The week number is the number of weeks since the start of the GPS epoch, 6 January 1980. The seconds and femtoseconds are the number of seconds and femtoseconds (<code>1e-15</code>) since the start of the GPS week (starting midnight Saturday night/Sunday morning).</p>
+<p>The <a href="/gps_time/core.html#GPSTime"><code>GPSTime</code></a> class also has a property of <code>time_of_week</code> that returns the time of week as a float. Note that the floating point accuracy of <code>time_of_week</code> can be as low as tens of picoseconds (<code>1e-12</code>).</p>
+
+</div>
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -84,18 +106,25 @@ nb_path: "nbs/00_core.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="GPSTime" class="doc_header"><code>class</code> <code>GPSTime</code><a href="https://github.com/the-aerospace-corporation/gps_time/tree/master/gps_time/core.py#L26" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>GPSTime</code>(<strong><code>week_number</code></strong>:<code>int</code>, <strong><code>time_of_week</code></strong>:<code>Union[int, float]</code>)</p>
+<h2 id="GPSTime" class="doc_header"><code>class</code> <code>GPSTime</code><a href="https://github.com/the-aerospace-corporation/gps_time/tree/master/gps_time/core.py#L49" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>GPSTime</code>(<strong><code>week_number</code></strong>:<code>int</code>, <strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <p>Time representation for GPS.</p>
 <h2 id="Attributes">Attributes<a class="anchor-link" href="#Attributes"> </a></h2><p>week_number : int
     The number of weeks since the start of the GPS epoch, 6 Jan 1980.
-time_of_week : float
-    The number of seconds into the week. The zero time is at midnight on
-    Sunday morning, i.e. betwen Saturday and Sunday. Should be between 0
-    and 604800 because otherwise, the week number would be incorrect.</p>
+seconds : int
+    The number of integer seconds into the week. The zero time is at
+    midnight on Sunday morning, i.e. betwen Saturday and Sunday. Should
+    be between 0 and 604800 because otherwise, the week number would be
+    incorrect.
+femtoseconds : int
+    The number of femtoseconds into the week. That is, this is the number
+    of fractional seconds in the time of week with a scale factor of 1e15.</p>
 <h2 id="Raises">Raises<a class="anchor-link" href="#Raises"> </a></h2><p>TypeError
-    For various operators if not the selected types are not implemented.</p>
-<h2 id="Todo">Todo<a class="anchor-link" href="#Todo"> </a></h2><p>.. todo:: Add datetimes as valid types for the add/subtract</p>
+    For various operators if not the selected types are not implemented.
+ValueError
+    If an incorrect set of input arguments are provided to the constructor</p>
+<h2 id="Todo">Todo<a class="anchor-link" href="#Todo"> </a></h2><p>.. todo:: Create a GPSTimeDelta class to handle adding/subtracting with
+    increase accuracy.</p>
 
 </div>
 
@@ -103,6 +132,13 @@ time_of_week : float
 
 </div>
 </div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
 
 </div>
     {% endraw %}
