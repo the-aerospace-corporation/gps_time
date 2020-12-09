@@ -15,12 +15,35 @@ import datetime
 
 import numpy as np
 
-from typing import Union
+from typing import Union, Tuple
 from logging import getLogger
 
 from .datetime import tow2datetime, datetime2tow
 
 logger = getLogger(__name__)
+
+# Cell
+_SEC_IN_WEEK: int = 604800
+_SEC_TO_FEMTO_SEC: float = 1.0e15
+_FEMTO_SEC_TO_SEC: float = 1.0e-15
+
+# Cell
+def _tow2sec(time_of_week: float) -> Tuple[int, int]:
+    """Convert a float time to integer seconds and femtoseconds
+
+    Parameters
+    ----------
+    time_of_week : float
+        The time of week, as a float
+
+    Returns
+    -------
+    Tuple[int, int]
+        The seconds and femtoseconds within the time of week
+    """
+    seconds = int(time_of_week // 1)
+    femtoseconds = int((time_of_week % 1) * _SEC_TO_FEMTO_SEC)
+    return seconds, femtoseconds
 
 # Cell
 class GPSTime:
@@ -30,49 +53,158 @@ class GPSTime:
     ----------
     week_number : int
         The number of weeks since the start of the GPS epoch, 6 Jan 1980.
-    time_of_week : float
-        The number of seconds into the week. The zero time is at midnight on
-        Sunday morning, i.e. betwen Saturday and Sunday. Should be between 0
-        and 604800 because otherwise, the week number would be incorrect.
-
+    seconds : int
+        The number of integer seconds into the week. The zero time is at
+        midnight on Sunday morning, i.e. betwen Saturday and Sunday. Should
+        be between 0 and 604800 because otherwise, the week number would be
+        incorrect.
+    femtoseconds : int
+        The number of femtoseconds into the week. That is, this is the number
+        of fractional seconds in the time of week with a scale factor of 1e15.
     Raises
     ------
     TypeError
         For various operators if not the selected types are not implemented.
+    ValueError
+        If an incorrect set of input arguments are provided to the constructor
 
     Todo
     ----
-    .. todo:: Add datetimes as valid types for the add/subtract
+    .. todo:: Create a GPSTimeDelta class to handle adding/subtracting with
+        increase accuracy.
 
     """
 
-    _SEC_IN_WEEK: int = 604800
+    weeks: int
+    seconds: int
+    femtoseconds: int
 
-    def __init__(self, week_number: int, time_of_week: Union[int, float]) -> None:
+    def __init__(self, week_number: int, *args, **kwargs) -> None:
         """Object constructor.
 
         This sets the week number and the time of week and ensures that the
-        time of week is a float. It also calls `correct_weeks()`, which checks
-        to see if the time of week is negative or past the end of the week.
+        time of week is a float. It also calls `correct_time()`, which checks
+        to see if the time of week is negative or past the end of the week
+        and adjust the values accordingly.
+
+        This constructor supports many different input arguments. However some
+        sets of input arguments may result in truncation and errors if a
+        `float` is provided when an `int` is expected.
 
         Parameters
         ----------
         week_number : int
             The number of week
-        time_of_week : Union[int, float]
-            The time of week in seconds
+        *args, **kwargs
+            The time of week in various representations. If positional arguments
+            are used, a single positional argument is interpreted as a time of
+            week (i.e. a float), while two arguments are interpreted as seconds
+            and femtoseconds. In the latter case, the values will be cast as
+            integers, which may result in truncation. Keyword arguments function
+            in much the same way, with "time_of_week", "seconds", and
+            "femtoseconds" being the valid keyword arguments. If only "seconds"
+            is given, it will be treated like "time_of_week". If no additional
+            arguments are given, the time is assumed to be the start of the week.
 
-        Returns
-        -------
-        None
+        Raises
+        ------
+        ValueError
+            If invalid arguments are given. Examples include:
+            - Mixed positional and keyword arguments are not supported
+            - More than two arguments are not supported
+            - Keyword arguments "time_of_week" and "femtoseconds" cannot be
+              used together.
 
         """
-        self.week_number = int(week_number)
-        self.time_of_week = float(time_of_week)
+        if len(args) > 0 and len(kwargs) > 0:
+            raise ValueError(
+                "GPSTime does not support both positional and keyword arguments."
+            )
 
-        self.correct_weeks()
+        self.week_number = int(week_number)
+        if len(args) > 2:  # If more than 3 args (week + 2 times)
+            raise ValueError(
+                "Only up to three arguments allowed (Week number, seconds, "
+                "and femtoseconds)"
+            )
+        elif len(args) == 2:
+            if isinstance(args[0], float) or isinstance(args[1], float):
+                logger.warning(
+                    "Two times given, but at least one is a float. Decimal "
+                    "values will be truncated"
+                )
+            self.seconds = int(args[0])
+            self.femtoseconds = int(args[1])
+        elif len(args) == 1:
+            self.time_of_week = args[0]
+        else:
+            if len(kwargs) > 2:
+                raise ValueError("Too many arguments")
+            elif len(kwargs) == 0:
+                logger.warning(
+                    "No time of week information. Defaulting to start of week"
+                )
+                self.seconds = 0
+                self.femtoseconds = 0
+
+            elif "femtoseconds" in kwargs:
+                if "time_of_week" in kwargs:
+                    raise ValueError(
+                        """Keyword arguments "time_of_week" and "femtoseconds"
+                        are incompatible."""
+                    )
+                elif "seconds" in kwargs:
+                    if isinstance(kwargs["seconds"], float) or isinstance(
+                        kwargs["femtoseconds"], float
+                    ):
+                        logger.warning(
+                            "Two times given, but at least one is a float. "
+                            "Decimal values will be truncated"
+                        )
+                    self.seconds = int(kwargs["seconds"])
+                    self.femtoseconds = int(kwargs["femtoseconds"])
+                else:
+                    raise ValueError(
+                        """Keyword argument "femtoseconds" must be
+                        accompanied by "seconds"."""
+                    )
+            elif "seconds" in kwargs:
+                logger.warning(
+                    "seconds given with no femtoseconds. Will be handled "
+                    "as time of week"
+                )
+                self.time_of_week = float(kwargs["seconds"])
+            elif "time_of_week" in kwargs:
+                self.time_of_week = float(kwargs["time_of_week"])
+            else:
+                raise ValueError("Invalid Keyword arguments")
+
+        self.correct_time()
         if self.week_number < 0:
             logger.warning("Week number is less than 0")
+
+
+
+    @property
+    def time_of_week(self) -> float:
+        """The time of week as a float."""
+        return float(self.seconds + self.femtoseconds * _FEMTO_SEC_TO_SEC)
+
+    @time_of_week.setter
+    def time_of_week(self, time_of_week: float) -> None:
+        """A setter for the time of week.
+
+        The method allows the seconds and femtoseconds to be updated using
+        a single float.
+
+        Paremeters
+        ----------
+        time_of_week : float
+            The time of week as a float
+        """
+        sec, femtosec = _tow2sec(time_of_week)
+        self.seconds = sec
+        self.femtoseconds = femtosec
 
     def to_datetime(self) -> datetime.datetime:
         """Convert the `GPSTime` to a datetime.
@@ -150,14 +282,32 @@ class GPSTime:
         None
 
         """
-        if (self.time_of_week >= self._SEC_IN_WEEK) or (self.time_of_week < 0):
-            weeks_to_add = int(self.time_of_week // self._SEC_IN_WEEK)
-            new_time_of_week = float(self.time_of_week % self._SEC_IN_WEEK)
+        logger.warning(
+            "The correct_weeks() method will be deprecated in a future version. Use the correct_time() method instead."
+        )
+        if (self.time_of_week >= _SEC_IN_WEEK) or (self.time_of_week < 0):
+            weeks_to_add = int(self.time_of_week // _SEC_IN_WEEK)
+            new_time_of_week = float(self.time_of_week % _SEC_IN_WEEK)
 
             self.week_number += weeks_to_add
             self.time_of_week = new_time_of_week
         else:
             pass
+
+    def correct_time(self) -> None:
+        if (self.femtoseconds >= _SEC_TO_FEMTO_SEC) or (self.femtoseconds < 0):
+            seconds_to_add = int(self.femtoseconds // _SEC_TO_FEMTO_SEC)
+            new_femto_sec = int(self.femtoseconds % _SEC_TO_FEMTO_SEC)
+
+            self.seconds += seconds_to_add
+            self.femtoseconds = new_femto_sec
+
+        if (self.seconds >= _SEC_IN_WEEK) or (self.seconds < 0):
+            weeks_to_add = int(self.seconds // _SEC_IN_WEEK)
+            new_sec = int(self.seconds % _SEC_IN_WEEK)
+
+            self.week_number += weeks_to_add
+            self.seconds = new_sec
 
     def __add__(
         self,
@@ -232,8 +382,9 @@ class GPSTime:
             )
 
         week_num = self.week_number + gps_time_to_add.week_number
-        time_of_week = self.time_of_week + gps_time_to_add.time_of_week
-        return GPSTime(week_num, time_of_week)
+        seconds = self.seconds + gps_time_to_add.seconds
+        femtoseconds = self.femtoseconds + gps_time_to_add.femtoseconds
+        return GPSTime(week_num, seconds, femtoseconds)
 
     def __sub__(
         self,
@@ -284,26 +435,46 @@ class GPSTime:
                 )
             )
         if isinstance(other, int) or isinstance(other, float):
-            gps_time_to_sub = float(other)
-            return GPSTime(self.week_number, self.time_of_week - gps_time_to_sub)
+            sec_to_sub, femto_to_sub = _tow2sec(float(other))
+
+            return GPSTime(
+                self.week_number,
+                self.seconds - sec_to_sub,
+                self.femtoseconds - femto_to_sub,
+            )
 
         elif isinstance(other, datetime.timedelta):
-            gps_time_to_sub = other.total_seconds()
-            return GPSTime(self.week_number, self.time_of_week - gps_time_to_sub)
+            sec_to_sub, femto_to_sub = _tow2sec(float(other.total_seconds()))
+
+            return GPSTime(
+                self.week_number,
+                self.seconds - sec_to_sub,
+                self.femtoseconds - femto_to_sub,
+            )
 
         elif isinstance(other, datetime.datetime):
             other_gpstime = GPSTime.from_datetime(other)
 
             weeks_diff = self.week_number - other_gpstime.week_number
-            time_diff = self.time_of_week - other_gpstime.time_of_week
+            sec_diff = self.seconds - other_gpstime.seconds
+            femto_diff = self.femtoseconds - other_gpstime.femtoseconds
 
-            return float(weeks_diff * self._SEC_IN_WEEK + time_diff)
+            return float(
+                weeks_diff * _SEC_IN_WEEK
+                + sec_diff
+                + femto_diff * _FEMTO_SEC_TO_SEC
+            )
 
         elif isinstance(other, GPSTime):
             weeks_diff = self.week_number - other.week_number
-            time_diff = self.time_of_week - other.time_of_week
+            sec_diff = self.seconds - other.seconds
+            femto_diff = self.femtoseconds - other.femtoseconds
 
-            return float(weeks_diff * self._SEC_IN_WEEK + time_diff)
+            return float(
+                weeks_diff * _SEC_IN_WEEK
+                + sec_diff
+                + femto_diff * _FEMTO_SEC_TO_SEC
+            )
 
         elif isinstance(other, np.ndarray):
             if other.dtype == np.object:
@@ -501,7 +672,7 @@ class GPSTime:
 
     def __hash__(self):
         """Make GPSTime hashable."""
-        return hash(str(self.week_number) + str(self.time_of_week))
+        return hash(str(self.week_number) + str(self.seconds) + str(self.femtoseconds))
 
     def __repr__(self) -> str:
         """Representation of the object.

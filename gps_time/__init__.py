@@ -1,4 +1,4 @@
-__version__ = "2.7.7"
+__version__ = "2.8.1"
 __copyright__ = "Copyright (C) 2020 The Aerospace Corporation"
 
 import logging
