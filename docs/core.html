@@ -91,6 +91,7 @@ nb_path: "nbs/00_core.ipynb"
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="The-GPSTime-Class">The GPSTime Class<a class="anchor-link" href="#The-GPSTime-Class"> </a></h2><p>The primary class for this module is, unsurprisingly, the <a href="/gps_time/core.html#GPSTime"><code>GPSTime</code></a> class. This class has three public attributes, the <code>week_number</code>, <code>seconds</code>, and <code>femtoseconds</code>. The week number is the number of weeks since the start of the GPS epoch, 6 January 1980. The seconds and femtoseconds are the number of seconds and femtoseconds (<code>1e-15</code>) since the start of the GPS week (starting midnight Saturday night/Sunday morning).</p>
 <p>The <a href="/gps_time/core.html#GPSTime"><code>GPSTime</code></a> class also has a property of <code>time_of_week</code> that returns the time of week as a float. Note that the floating point accuracy of <code>time_of_week</code> can be as low as tens of picoseconds (<code>1e-12</code>).</p>
+<p>The GPSTime class can be save to and loaded from file using <code>ruamel.yaml</code>.</p>
 
 </div>
 </div>
