@@ -2,6 +2,7 @@ import pytest
 
 import datetime
 import numpy as np
+import ruamel.yaml
 
 from gps_time.core import GPSTime
 from gps_time.datetime import datetime2tow
@@ -14,6 +15,7 @@ def test_GPSTime_constructor():
     t = GPSTime(1500, 604800)
     assert t.week_number == 1501, "Weeknum not properly calculated"
     assert t.time_of_week == 0, "Tow not properly calculated"
+
 
 def test_GPSTime_constructor_input_arguments():
     t = GPSTime(1500, 604799, 9e14)
@@ -35,7 +37,6 @@ def test_GPSTime_constructor_input_arguments():
     assert t.seconds == 604799, "seconds not properly calculated"
     assert t.femtoseconds == 9e14, "femtoseconds not properly calculated"
 
-
     t = GPSTime(1500, femtoseconds=9e14, seconds=604799)
     assert t.week_number == 1500, "Weeknum not properly calculated"
     assert t.time_of_week == 604799.9, "Tow not properly calculated"
@@ -55,12 +56,17 @@ def test_GPSTime_constructor_input_arguments():
     assert t.seconds == 604799, "seconds not properly calculated"
     assert np.isclose(t.femtoseconds, 9e14), "femtoseconds not properly calculated"
 
-    with pytest.raises(ValueError):
-       t = GPSTime(1500, 1, 2, 3)
-    
+    t = GPSTime(week_number=1500, time_of_week=604799.9)
+    assert t.week_number == 1500, "Weeknum not properly calculated"
+    assert t.time_of_week == 604799.9, "Tow not properly calculated"
+    assert t.seconds == 604799, "seconds not properly calculated"
+    assert np.isclose(t.femtoseconds, 9e14), "femtoseconds not properly calculated"
 
     with pytest.raises(ValueError):
-       t = GPSTime(1500, time_of_week=1.0, seconds=2, femtoseconds=3)
+        t = GPSTime(1500, 1, 2, 3)
+
+    with pytest.raises(ValueError):
+        t = GPSTime(1500, time_of_week=1.0, seconds=2, femtoseconds=3)
 
     with pytest.raises(ValueError):
         t = GPSTime(1500, time_of_week=604799, femtoseconds=9e14)
@@ -77,11 +83,52 @@ def test_GPSTime_from_datetime():
     dt = datetime.datetime(2020, 4, 24)
     t = GPSTime.from_datetime(dt)
     assert t.to_datetime() == dt
+    assert hasattr(t, "seconds"), "from_datetime() did not instantiate seconds"
+    assert hasattr(
+        t, "femtoseconds"
+    ), "from_datetime() did not instantiate femtoseconds"
 
 
-@pytest.mark.parametrize("invalid_type", [
-    True, [1], (1,), {1: 1}, 1, 1.0, type, GPSTime(0, 0)
-])
+def test_GPSTime_from_yaml():
+    yaml = ruamel.yaml.YAML(typ="unsafe")
+    yaml.register_class(GPSTime)
+
+    current_yaml_format = """
+        !GPSTime
+            femtoseconds: 200000000000000
+            seconds: 23234
+            week_number: 213
+        """
+    current_format: GPSTime = yaml.load(current_yaml_format)
+
+    assert isinstance(current_format, GPSTime)
+    assert hasattr(current_format, "week_number")
+    assert hasattr(current_format, "seconds")
+    assert hasattr(current_format, "femtoseconds")
+    assert current_format.week_number == 213
+    assert current_format.seconds == 23234
+    assert current_format.femtoseconds == 200000000000000
+    assert current_format.time_of_week == 23234.2
+
+    legacy_yaml_format = """
+        !GPSTime
+            time_of_week: 23234.2
+            week_number: 213
+        """
+    legacy_format: GPSTime = yaml.load(legacy_yaml_format)
+    assert isinstance(legacy_format, GPSTime)
+    assert hasattr(legacy_format, "week_number")
+    assert hasattr(legacy_format, "seconds")
+    assert hasattr(legacy_format, "femtoseconds")
+    assert legacy_format.week_number == 213
+    assert legacy_format.seconds == 23234
+    assert np.isclose(legacy_format.femtoseconds, 200000000000000)
+    assert legacy_format.time_of_week == 23234.2
+
+
+@pytest.mark.parametrize(
+    "invalid_type", [True, [1], (1,), {1: 1}, 1, 1.0, type, GPSTime(0, 0)]
+)
 def test_GPSTime_from_datetime_invalid_type(invalid_type):
     with pytest.raises(TypeError):
         GPSTime.from_datetime(invalid_type)
@@ -104,7 +151,6 @@ def test_GPSTime_add_float():
     gps_time2 = gps_time + -604701
     assert gps_time2.week_number == 2079
     assert gps_time2.time_of_week == 604799
-
 
 
 def test_GPSTime_add_timedelta():
@@ -144,9 +190,7 @@ def test_GPSTime_add_numpy_array():
         assert add.time_of_week == gps_time.time_of_week + i
 
 
-@pytest.mark.parametrize("invalid_type", [
-    True, [1], (1,), {1: 1}
-])
+@pytest.mark.parametrize("invalid_type", [True, [1], (1,), {1: 1}])
 def test_GPSTime_add_type_error(invalid_type):
     with pytest.raises(TypeError):
         GPSTime(0, 0) + invalid_type
@@ -208,6 +252,7 @@ def test_GPSTime_sub_nparray_GPSTime():
     for i, t in enumerate(subtracted):
         assert t == 0
 
+
 def test_GPSTime_sub_nparray_datetime():
     gps_time = GPSTime(2080, 100)
     arr = np.array([gps_time.to_datetime()])
@@ -225,9 +270,7 @@ def test_GPSTime_sub_nparray_timedelta():
         assert t.week_number == 2079
 
 
-@pytest.mark.parametrize("invalid_type", [
-    True, [1], (1,), {1: 1}
-])
+@pytest.mark.parametrize("invalid_type", [True, [1], (1,), {1: 1}])
 def test_GPSTime_sub_type_error(invalid_type):
     with pytest.raises(TypeError):
         GPSTime(0, 0) - invalid_type
@@ -242,119 +285,110 @@ def test_GPSTime_sub_add_picosecond_accuracy():
     assert t3.time_of_week == 604800 - 1e-12
 
 
-@pytest.mark.parametrize("times", [
-    (GPSTime(1800, 499999 + 1e-12), GPSTime(1800, 500000), True),
-    (GPSTime(1800, 500000), GPSTime(1800, 499999 + 1e-12), False),
-    (GPSTime(1800, 499999 + 1e-12),
-        GPSTime(1800, 500000).to_datetime(), True),
-    (GPSTime(1800, 500000),
-        GPSTime(1800, 499999 + 1e-12).to_datetime(), False)
-])
+@pytest.mark.parametrize(
+    "times",
+    [
+        (GPSTime(1800, 499999 + 1e-12), GPSTime(1800, 500000), True),
+        (GPSTime(1800, 500000), GPSTime(1800, 499999 + 1e-12), False),
+        (GPSTime(1800, 499999 + 1e-12), GPSTime(1800, 500000).to_datetime(), True),
+        (GPSTime(1800, 500000), GPSTime(1800, 499999 + 1e-12).to_datetime(), False),
+    ],
+)
 def test_GPSTime_less_than(times):
     assert (times[0] < times[1]) == times[2]
 
 
-@pytest.mark.parametrize("invalid_type", [
-    True, [1], (1,), {1: 1}, 1, 1.0
-])
+@pytest.mark.parametrize("invalid_type", [True, [1], (1,), {1: 1}, 1, 1.0])
 def test_GPSTime_lt_type_error(invalid_type):
     with pytest.raises(TypeError):
         GPSTime(0, 0) < invalid_type
 
 
-@pytest.mark.parametrize("times", [
-    (GPSTime(1800, 499999 + 1e-12), GPSTime(1800, 500000), False),
-    (GPSTime(1800, 500000), GPSTime(1800, 499999 + 1e-12), True),
-    (GPSTime(1800, 499999 + 1e-12),
-        GPSTime(1800, 500000).to_datetime(), False),
-    (GPSTime(1800, 500000),
-        GPSTime(1800, 499999 + 1e-12).to_datetime(), True)
-])
+@pytest.mark.parametrize(
+    "times",
+    [
+        (GPSTime(1800, 499999 + 1e-12), GPSTime(1800, 500000), False),
+        (GPSTime(1800, 500000), GPSTime(1800, 499999 + 1e-12), True),
+        (GPSTime(1800, 499999 + 1e-12), GPSTime(1800, 500000).to_datetime(), False),
+        (GPSTime(1800, 500000), GPSTime(1800, 499999 + 1e-12).to_datetime(), True),
+    ],
+)
 def test_GPSTime_greater_than(times):
     assert (times[0] > times[1]) == times[2]
 
 
-@pytest.mark.parametrize("invalid_type", [
-    True, [1], (1,), {1: 1}, 1, 1.0
-])
+@pytest.mark.parametrize("invalid_type", [True, [1], (1,), {1: 1}, 1, 1.0])
 def test_GPSTime_gt_type_error(invalid_type):
     with pytest.raises(TypeError):
         GPSTime(0, 0) > invalid_type
 
 
-@pytest.mark.parametrize("times", [
-    (GPSTime(1800, 499999 + 1e-12), GPSTime(1800, 500000), False),
-    (GPSTime(1800, 500000), GPSTime(1800, 500000), True),
-    (GPSTime(1800, 499999 + 1e-12),
-        GPSTime(1800, 500000).to_datetime(), False),
-    (GPSTime(1800, 500000),
-        GPSTime(1800, 500000).to_datetime(), True),
-])
+@pytest.mark.parametrize(
+    "times",
+    [
+        (GPSTime(1800, 499999 + 1e-12), GPSTime(1800, 500000), False),
+        (GPSTime(1800, 500000), GPSTime(1800, 500000), True),
+        (GPSTime(1800, 499999 + 1e-12), GPSTime(1800, 500000).to_datetime(), False),
+        (GPSTime(1800, 500000), GPSTime(1800, 500000).to_datetime(), True),
+    ],
+)
 def test_GPSTime_equality(times):
     assert (times[0] == times[1]) == times[2]
 
 
-@pytest.mark.parametrize("invalid_type", [
-    True, [1], (1,), {1: 1}, 1, 1.0
-])
+@pytest.mark.parametrize("invalid_type", [True, [1], (1,), {1: 1}, 1, 1.0])
 def test_GPSTime_eq_type_error(invalid_type):
     with pytest.raises(TypeError):
         GPSTime(0, 0) == invalid_type
 
-@pytest.mark.parametrize("invalid_type", [
-    True, [1], (1,), {1: 1}, 1, 1.0
-])
+
+@pytest.mark.parametrize("invalid_type", [True, [1], (1,), {1: 1}, 1, 1.0])
 def test_GPSTime_ne_type_error(invalid_type):
     with pytest.raises(TypeError):
         GPSTime(0, 0) != invalid_type
 
-@pytest.mark.parametrize("times", [
-    (GPSTime(1800, 499999 + 1e-12), GPSTime(1800, 500000), True),
-    (GPSTime(1800, 500000), GPSTime(1800, 499999 + 1e-12), False),
-    (GPSTime(1800, 499999 + 1e-12),
-        GPSTime(1800, 500000).to_datetime(), True),
-    (GPSTime(1800, 500000),
-        GPSTime(1800, 499999 + 1e-12).to_datetime(), False),
-    (GPSTime(1800, 500000), GPSTime(1800, 500000), True),
-    (GPSTime(1800, 500000),
-        GPSTime(1800, 500000).to_datetime(), True),
-    (GPSTime(1800, 500000), GPSTime(1800, 499999 + 1e-12), False),
-    (GPSTime(1800, 500000),
-        GPSTime(1800, 499999 + 1e-12).to_datetime(), False)
-])
+
+@pytest.mark.parametrize(
+    "times",
+    [
+        (GPSTime(1800, 499999 + 1e-12), GPSTime(1800, 500000), True),
+        (GPSTime(1800, 500000), GPSTime(1800, 499999 + 1e-12), False),
+        (GPSTime(1800, 499999 + 1e-12), GPSTime(1800, 500000).to_datetime(), True),
+        (GPSTime(1800, 500000), GPSTime(1800, 499999 + 1e-12).to_datetime(), False),
+        (GPSTime(1800, 500000), GPSTime(1800, 500000), True),
+        (GPSTime(1800, 500000), GPSTime(1800, 500000).to_datetime(), True),
+        (GPSTime(1800, 500000), GPSTime(1800, 499999 + 1e-12), False),
+        (GPSTime(1800, 500000), GPSTime(1800, 499999 + 1e-12).to_datetime(), False),
+    ],
+)
 def test_GPSTime_less_than_equal(times):
     assert (times[0] <= times[1]) == times[2]
 
 
-@pytest.mark.parametrize("invalid_type", [
-    True, [1], (1,), {1: 1}, 1, 1.0
-])
+@pytest.mark.parametrize("invalid_type", [True, [1], (1,), {1: 1}, 1, 1.0])
 def test_GPSTime_le_type_error(invalid_type):
     with pytest.raises(TypeError):
         GPSTime(0, 0) <= invalid_type
 
 
-@pytest.mark.parametrize("times", [
-    (GPSTime(1800, 499999 + 1e-12), GPSTime(1800, 500000), False),
-    (GPSTime(1800, 500000), GPSTime(1800, 500000), True),
-    (GPSTime(1800, 499999 + 1e-12),
-        GPSTime(1800, 500000).to_datetime(), False),
-    (GPSTime(1800, 500000),
-        GPSTime(1800, 500000).to_datetime(), True),
-    (GPSTime(1800, 500000), GPSTime(1800, 500000), True),
-    (GPSTime(1800, 500000),
-        GPSTime(1800, 500000).to_datetime(), True),
-    (GPSTime(1800, 499999 + 1e-12), GPSTime(1800, 500000), False),
-    (GPSTime(1800, 499999 + 1e-12),
-        GPSTime(1800, 500000).to_datetime(), False),
-])
+@pytest.mark.parametrize(
+    "times",
+    [
+        (GPSTime(1800, 499999 + 1e-12), GPSTime(1800, 500000), False),
+        (GPSTime(1800, 500000), GPSTime(1800, 500000), True),
+        (GPSTime(1800, 499999 + 1e-12), GPSTime(1800, 500000).to_datetime(), False),
+        (GPSTime(1800, 500000), GPSTime(1800, 500000).to_datetime(), True),
+        (GPSTime(1800, 500000), GPSTime(1800, 500000), True),
+        (GPSTime(1800, 500000), GPSTime(1800, 500000).to_datetime(), True),
+        (GPSTime(1800, 499999 + 1e-12), GPSTime(1800, 500000), False),
+        (GPSTime(1800, 499999 + 1e-12), GPSTime(1800, 500000).to_datetime(), False),
+    ],
+)
 def test_GPSTime_greater_than_equal(times):
     assert (times[0] >= times[1]) == times[2]
 
 
-@pytest.mark.parametrize("invalid_type", [
-    True, [1], (1,), {1: 1}, 1, 1.0
-])
+@pytest.mark.parametrize("invalid_type", [True, [1], (1,), {1: 1}, 1, 1.0])
 def test_GPSTime_ge_type_error(invalid_type):
     with pytest.raises(TypeError):
         GPSTime(0, 0) <= invalid_type
@@ -382,6 +416,7 @@ def test_GPSTime_isub():
 
 def test_has_repr():
     repr(GPSTime(2080, 604800))
+
 
 def test_has_hash():
     GPSTime(2080, 604800).__hash__()
