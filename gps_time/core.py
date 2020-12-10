@@ -12,6 +12,7 @@ __all__ = ['logger', 'GPSTime']
 # Cell
 #nbdev_comment from __future__ import annotations
 import datetime
+import ruamel.yaml
 
 import numpy as np
 
@@ -79,6 +80,8 @@ class GPSTime:
     seconds: int
     femtoseconds: int
 
+    yaml_tag: str = u"!GPSTime"
+
     def __init__(self, week_number: int, *args, **kwargs) -> None:
         """Object constructor.
 
@@ -116,6 +119,7 @@ class GPSTime:
               used together.
 
         """
+        self.yaml_tag: str = u"!GPSTime"
         if len(args) > 0 and len(kwargs) > 0:
             raise ValueError(
                 "GPSTime does not support both positional and keyword arguments."
@@ -183,8 +187,6 @@ class GPSTime:
         if self.week_number < 0:
             logger.warning("Week number is less than 0")
 
-
-
     @property
     def time_of_week(self) -> float:
         """The time of week as a float."""
@@ -205,6 +207,62 @@ class GPSTime:
         sec, femtosec = _tow2sec(time_of_week)
         self.seconds = sec
         self.femtoseconds = femtosec
+
+    @classmethod
+    def from_yaml(
+        cls: type, constructor: ruamel.yaml.Constructor, node: ruamel.yaml.MappingNode
+    ) -> GPSTime:
+        """YAML Constructor.
+
+        This YAML constructor is used to load a GPSTime from a YAML file. It must be
+        registered with the YAML loader. This is accomplished using
+        ```python3
+        import ruamel.yaml
+        yaml = ruamel.yaml.YAML(typ="unsafe")
+        yaml.register_class(GPSTime)
+        ```
+
+        This class method is primarily used to add a constructor to an instance of
+        ruamel.yaml. Its functionality as a traditional classmethod is limited.
+
+        .. note:: YAML Module
+            This constructor is meant to be used with ruamel.yaml. It has not been tested
+            with pyyaml (the more common YAML library.)
+
+        """
+        nodes = node.value
+        week_number = None
+        seconds = None
+        femtoseconds = None
+        time_of_week = None
+        for i in range(0, len(nodes)):
+            node_name = nodes[i][0].value
+            print(node_name)
+            if node_name == "week_number":
+                week_number = constructor.construct_scalar(nodes[i][1])
+            elif node_name == "seconds":
+                seconds = constructor.construct_scalar(nodes[i][1])
+            elif node_name == "femtoseconds":
+                femtoseconds = constructor.construct_scalar(nodes[i][1])
+            elif node_name == "time_of_week":
+                time_of_week = constructor.construct_scalar(nodes[i][1])
+
+        if seconds is None and time_of_week is None:
+            raise ValueError("The YAML file lacked both a time_of_week and a seconds")
+        if seconds is not None and time_of_week is not None:
+            raise ValueError(
+                "YAML file defines both time_of_week and seconds (incompatible)"
+            )
+        elif time_of_week is not None and femtoseconds is not None:
+            raise ValueError(
+                "YAML file defines both time_of_week and femtoseconds (incompatible)"
+            )
+        elif seconds is not None and femtoseconds is None:
+            seconds, femtoseconds = _tow2sec(float(seconds))
+        elif time_of_week is not None:
+            seconds, femtoseconds = _tow2sec(float(time_of_week))
+
+        return cls(int(week_number), int(seconds), int(femtoseconds))
 
     def to_datetime(self) -> datetime.datetime:
         """Convert the `GPSTime` to a datetime.
@@ -460,9 +518,7 @@ class GPSTime:
             femto_diff = self.femtoseconds - other_gpstime.femtoseconds
 
             return float(
-                weeks_diff * _SEC_IN_WEEK
-                + sec_diff
-                + femto_diff * _FEMTO_SEC_TO_SEC
+                weeks_diff * _SEC_IN_WEEK + sec_diff + femto_diff * _FEMTO_SEC_TO_SEC
             )
 
         elif isinstance(other, GPSTime):
@@ -471,9 +527,7 @@ class GPSTime:
             femto_diff = self.femtoseconds - other.femtoseconds
 
             return float(
-                weeks_diff * _SEC_IN_WEEK
-                + sec_diff
-                + femto_diff * _FEMTO_SEC_TO_SEC
+                weeks_diff * _SEC_IN_WEEK + sec_diff + femto_diff * _FEMTO_SEC_TO_SEC
             )
 
         elif isinstance(other, np.ndarray):
