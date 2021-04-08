@@ -7,3 +7,5 @@ pytest
 pytest-coverage
 pytest-profiling
 twine
+ruamel.yaml
+
