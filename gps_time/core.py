@@ -237,7 +237,6 @@ class GPSTime:
         time_of_week = None
         for i in range(0, len(nodes)):
             node_name = nodes[i][0].value
-            print(node_name)
             if node_name == "week_number":
                 week_number = constructor.construct_scalar(nodes[i][1])
             elif node_name == "seconds":
