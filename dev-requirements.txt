@@ -1,6 +1,6 @@
 numpy
 jupyter
-nbdev
+nbdev<2
 black
 flake8
 pytest
