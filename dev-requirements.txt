@@ -1,6 +1,6 @@
 numpy
 jupyter
-nbdev<2
+nbdev
 black
 flake8
 pytest
@@ -8,4 +8,3 @@ pytest-coverage
 pytest-profiling
 twine
 ruamel.yaml
-

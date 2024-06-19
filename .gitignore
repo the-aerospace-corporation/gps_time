@@ -141,3 +141,5 @@ checklink/cookies.txt
 
 # pytest
 prof/
+_docs/
+_proc/
