@@ -82,7 +82,9 @@ def validate_gps_week(full_week: int, gps_week: int) -> None:
     Returns
     -------
     None
+    """
 
+    """
     Raises
     ------
     ValueError

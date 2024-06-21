@@ -126,7 +126,7 @@ class ThemeField(object):
     message, etc. A message field maps the colors to various log levels
     and indexed using logging levels.
 
-    Attributes
+    Parameters
     ----------
     DEBUG: str
         Str color code defined in Colors class for correcsponding log level
