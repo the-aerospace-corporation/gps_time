@@ -29,24 +29,24 @@ class LeapSeconds:
     """
 
     _leap_seconds: List[List[Union[GPSTime, int]]] = [
-        [GPSTime.from_datetime(time=datetime.datetime(year=1981, month=6, day=30, hour=23, minute=59, second=59, tzinfo=datetime.UTC)) + 1, 1],
-        [GPSTime.from_datetime(time=datetime.datetime(year=1982, month=6, day=30, hour=23, minute=59, second=59, tzinfo=datetime.UTC)) + 1, 2],
-        [GPSTime.from_datetime(time=datetime.datetime(year=1983, month=6, day=30, hour=23, minute=59, second=59, tzinfo=datetime.UTC)) + 1, 3],
-        [GPSTime.from_datetime(time=datetime.datetime(year=1985, month=6, day=30, hour=23, minute=59, second=59, tzinfo=datetime.UTC)) + 1, 4],
-        [GPSTime.from_datetime(time=datetime.datetime(year=1987, month=12, day=31, hour=23, minute=59, second=59, tzinfo=datetime.UTC)) + 1, 5],
-        [GPSTime.from_datetime(time=datetime.datetime(year=1989, month=12, day=31, hour=23, minute=59, second=59, tzinfo=datetime.UTC)) + 1, 6],
-        [GPSTime.from_datetime(time=datetime.datetime(year=1990, month=12, day=31, hour=23, minute=59, second=59, tzinfo=datetime.UTC)) + 1, 7],
-        [GPSTime.from_datetime(time=datetime.datetime(year=1992, month=6, day=30, hour=23, minute=59, second=59, tzinfo=datetime.UTC)) + 1, 8],
-        [GPSTime.from_datetime(time=datetime.datetime(year=1993, month=6, day=30, hour=23, minute=59, second=59, tzinfo=datetime.UTC)) + 1, 9],
-        [GPSTime.from_datetime(time=datetime.datetime(year=1994, month=6, day=30, hour=23, minute=59, second=59, tzinfo=datetime.UTC)) + 1, 10],
-        [GPSTime.from_datetime(time=datetime.datetime(year=1995, month=12, day=31, hour=23, minute=59, second=59, tzinfo=datetime.UTC)) + 1, 11],
-        [GPSTime.from_datetime(time=datetime.datetime(year=1997, month=6, day=30, hour=23, minute=59, second=59, tzinfo=datetime.UTC)) + 1, 12],
-        [GPSTime.from_datetime(time=datetime.datetime(year=1998, month=12, day=31, hour=23, minute=59, second=59, tzinfo=datetime.UTC)) + 1, 13],
-        [GPSTime.from_datetime(time=datetime.datetime(year=2005, month=12, day=31, hour=23, minute=59, second=59, tzinfo=datetime.UTC)) + 1, 14],
-        [GPSTime.from_datetime(time=datetime.datetime(year=2008, month=12, day=31, hour=23, minute=59, second=59, tzinfo=datetime.UTC)) + 1, 15],
-        [GPSTime.from_datetime(time=datetime.datetime(year=2012, month=6, day=30, hour=23, minute=59, second=59, tzinfo=datetime.UTC)) + 1, 16],
-        [GPSTime.from_datetime(time=datetime.datetime(year=2015, month=6, day=30, hour=23, minute=59, second=59, tzinfo=datetime.UTC)) + 1, 17],
-        [GPSTime.from_datetime(time=datetime.datetime(year=2016, month=12, day=31, hour=23, minute=59, second=59, tzinfo=datetime.UTC)) + 1, 18],
+        [GPSTime.from_datetime(time=datetime.datetime(year=1981, month=6, day=30, hour=23, minute=59, second=59, tzinfo=datetime.timezone.utc)) + 1, 1],
+        [GPSTime.from_datetime(time=datetime.datetime(year=1982, month=6, day=30, hour=23, minute=59, second=59, tzinfo=datetime.timezone.utc)) + 1, 2],
+        [GPSTime.from_datetime(time=datetime.datetime(year=1983, month=6, day=30, hour=23, minute=59, second=59, tzinfo=datetime.timezone.utc)) + 1, 3],
+        [GPSTime.from_datetime(time=datetime.datetime(year=1985, month=6, day=30, hour=23, minute=59, second=59, tzinfo=datetime.timezone.utc)) + 1, 4],
+        [GPSTime.from_datetime(time=datetime.datetime(year=1987, month=12, day=31, hour=23, minute=59, second=59, tzinfo=datetime.timezone.utc)) + 1, 5],
+        [GPSTime.from_datetime(time=datetime.datetime(year=1989, month=12, day=31, hour=23, minute=59, second=59, tzinfo=datetime.timezone.utc)) + 1, 6],
+        [GPSTime.from_datetime(time=datetime.datetime(year=1990, month=12, day=31, hour=23, minute=59, second=59, tzinfo=datetime.timezone.utc)) + 1, 7],
+        [GPSTime.from_datetime(time=datetime.datetime(year=1992, month=6, day=30, hour=23, minute=59, second=59, tzinfo=datetime.timezone.utc)) + 1, 8],
+        [GPSTime.from_datetime(time=datetime.datetime(year=1993, month=6, day=30, hour=23, minute=59, second=59, tzinfo=datetime.timezone.utc)) + 1, 9],
+        [GPSTime.from_datetime(time=datetime.datetime(year=1994, month=6, day=30, hour=23, minute=59, second=59, tzinfo=datetime.timezone.utc)) + 1, 10],
+        [GPSTime.from_datetime(time=datetime.datetime(year=1995, month=12, day=31, hour=23, minute=59, second=59, tzinfo=datetime.timezone.utc)) + 1, 11],
+        [GPSTime.from_datetime(time=datetime.datetime(year=1997, month=6, day=30, hour=23, minute=59, second=59, tzinfo=datetime.timezone.utc)) + 1, 12],
+        [GPSTime.from_datetime(time=datetime.datetime(year=1998, month=12, day=31, hour=23, minute=59, second=59, tzinfo=datetime.timezone.utc)) + 1, 13],
+        [GPSTime.from_datetime(time=datetime.datetime(year=2005, month=12, day=31, hour=23, minute=59, second=59, tzinfo=datetime.timezone.utc)) + 1, 14],
+        [GPSTime.from_datetime(time=datetime.datetime(year=2008, month=12, day=31, hour=23, minute=59, second=59, tzinfo=datetime.timezone.utc)) + 1, 15],
+        [GPSTime.from_datetime(time=datetime.datetime(year=2012, month=6, day=30, hour=23, minute=59, second=59, tzinfo=datetime.timezone.utc)) + 1, 16],
+        [GPSTime.from_datetime(time=datetime.datetime(year=2015, month=6, day=30, hour=23, minute=59, second=59, tzinfo=datetime.timezone.utc)) + 1, 17],
+        [GPSTime.from_datetime(time=datetime.datetime(year=2016, month=12, day=31, hour=23, minute=59, second=59, tzinfo=datetime.timezone.utc)) + 1, 18],
     ]
     """Table of Leap Seconds, note that the leap second occues at midnight, but before the next day."""
 
@@ -136,7 +136,7 @@ def gps2utc(gps_time: Union[GPSTime, datetime.datetime]) -> datetime.datetime:
     """
     if isinstance(gps_time, datetime.datetime):
         if gps_time.tzinfo is None:
-            gps_time = gps_time.replace(tzinfo=datetime.UTC)
+            gps_time = gps_time.replace(tzinfo=datetime.timezone.utc)
         gps_time = GPSTime.from_datetime(gps_time)
 
     assert isinstance(gps_time, GPSTime), "gps_time must be a GPSTime or datetime"
@@ -166,7 +166,7 @@ def utc2gps(utc_time: datetime.datetime) -> GPSTime:
     """
     assert isinstance(utc_time, datetime.datetime), "utc_time must be a datetime"
 
-    if utc_time.tzinfo != datetime.UTC:
+    if utc_time.tzinfo != datetime.timezone.utc:
         logger.warning("utc2gps() was passed a datetime object not in the UTC time zone. May cause unintended behavior")
 
     leap_seconds = LeapSeconds.get_leap_seconds(GPSTime.from_datetime(utc_time))

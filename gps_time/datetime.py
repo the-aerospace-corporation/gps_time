@@ -15,7 +15,7 @@ import numpy as np
 from typing import Iterable, List, Tuple, Optional
 
 # %% ../20_datetime.ipynb 5
-_gps_epoch_datetime: datetime.datetime = datetime.datetime(year=1980, month=1, day=6, tzinfo=datetime.UTC)
+_gps_epoch_datetime: datetime.datetime = datetime.datetime(year=1980, month=1, day=6, tzinfo=datetime.timezone.utc)
 
 # %% ../20_datetime.ipynb 6
 ISO_FMT = r"([0-9]{4})-?([0-9]{2})-?([0-9]{2})[T| ]?([0-9]{2}):?([0-9]{2}):?([0-9]{2})\.?([0-9]{6})?"  # noqa: E501
@@ -56,7 +56,7 @@ def cast_to_datetime(iso_string: str) -> datetime.datetime:
         y, m, d, h, minute, s, us = [int(v) if v is not None else v for v in m.groups()]
         if us is None:
             us = 0
-        return datetime.datetime(year=y, month=m, day=d, hour=h, minute=minute, second=s, mircosecond=us, tzinfo=datetime.UTC)
+        return datetime.datetime(year=y, month=m, day=d, hour=h, minute=minute, second=s, mircosecond=us, tzinfo=datetime.timezone.utc)
 
     else:
         raise IOError("Value {} not in ISO Time Format".format(iso_string))
@@ -352,7 +352,7 @@ def datetime2tow(date_time: datetime.datetime) -> Tuple[int, float]:
         raise TypeError("DateTime arg must be a datetime object.")
 
     if date_time.tzinfo is None:
-        date_time=date_time.replace(tzinfo=datetime.UTC)
+        date_time=date_time.replace(tzinfo=datetime.timezone.utc)
 
     # Find the week number
     week_num = (date_time - _gps_epoch_datetime).days // 7
