@@ -1,9 +1,0 @@
-project:
-  output-dir: docs
-
-website:
-  title: "gps_time"
-  site-url: "https://the-aerospace-corporation.github.io/gps_time/"
-  description: "Tools to handle GPS Time"
-  repo-branch: master
-  repo-url: "https://github.com/the-aerospace-corporation/gps_time/tree/master/"

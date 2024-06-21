@@ -1,9 +1,12 @@
-__version__ = "2.8.8"
+__version__ = "3.0.0"
 __copyright__ = "Copyright (C) 2020 The Aerospace Corporation"
 
 import logging
-from .logutils import (AlignedColorFormatter, BasicColorTheme,
-                       display_distro_statement, )
+from .logutils import (
+    AlignedColorFormatter,
+    BasicColorTheme,
+    display_distro_statement,
+)
 
 logger = logging.getLogger(__name__)
 ch = logging.StreamHandler()

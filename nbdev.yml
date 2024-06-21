@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "gps_time"
+  site-url: "https://the-aerospace-corporation.github.io/gps_time"
+  description: "This module is used to represent GPS time and provide tools for handling it. It is an alternative to the python built-in datetime module that is easier to use for scientific computing."
+  repo-branch: master
+  repo-url: "https://github.com/the-aerospace-corporation/gps_time"
