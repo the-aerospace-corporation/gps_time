@@ -1,0 +1,41 @@
+site_name: gps_time
+site_description: GPS Time representation and tools for Python
+site_author: The Aerospace Corporation
+repo_url: https://github.com/the-aerospace-corporation/gps_time
+repo_name: the-aerospace-corporation/gps_time
+
+markdown_extensions:
+  - pymdownx.arithmatex:
+      generic: true
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.indexes
+
+plugins:
+  - search
+  - include-markdown
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [.]
+
+nav:
+  - Home: index.md
+  - Math & Background: math_background.md
+  - Advanced Examples: advanced_examples.md
+  - Tests: tests.md
+  - Contributing: CONTRIBUTING.md
+  - API Reference:
+      - Core: api/core.md
+      - Datetime: api/datetime.md
+      - Leap Seconds: api/leapseconds.md
+      - Utilities: api/utilities.md
+      - Logging: api/logutils.md

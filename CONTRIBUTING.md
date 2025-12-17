@@ -2,10 +2,11 @@
 
 ## How to get started
 
-Before anything else, please install the git hooks that run automatic scripts during each commit and merge to strip the notebooks of superfluous metadata (and avoid merge conflicts). After cloning the repository, run the following command inside it:
-```
-nbdev_install_git_hooks
-```
+Before anything else, please clone the repository and install the development dependencies. This will allow you to run tests and build the documentation locally.
+
+1.  Clone the repository.
+2.  Create a virtual environment: `python -m venv .venv` and activate it.
+3.  Install development dependencies: `pip install -e .[dev]`
 
 ## Did you find a bug?
 
@@ -29,5 +30,6 @@ nbdev_install_git_hooks
 
 ## Do you want to contribute to the documentation?
 
-* Docs are automatically created from the notebooks in the nbs folder.
+* Docs are built using `mkdocs`. You can serve them locally with `mkdocs serve`.
+* The documentation source files are located in the `docs/` directory.
 

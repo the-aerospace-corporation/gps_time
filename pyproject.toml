@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=64.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gps_time"
+version = "3.0.0"
+description = "This module is used to represent GPS time and provide tools for handling it. It is an alternative to the python built-in datetime module that is easier to use for scientific computing."
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "Apache-2.0"}
+authors = [
+    {name = "The Aerospace Corporation", email = "david.w.allen@aero.org"}
+]
+keywords = ["gps", "time", "python", "datetime"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "numpy",
+    "ruamel.yaml",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "black",
+    "flake8",
+    "mkdocs",
+    "mkdocs-material",
+    "mkdocstrings[python]",
+    "genbadge[coverage]",
+    "mkdocs-include-markdown-plugin",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["gps_time*"]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q --cov=gps_time --cov-report=term-missing --cov-report=xml"
+testpaths = [
+    "tests",
+]
