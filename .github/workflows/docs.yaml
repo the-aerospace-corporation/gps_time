@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - master
   pull_request:
 
 permissions:
@@ -30,6 +31,6 @@ jobs:
           mkdocs build
           
       - name: Deploy Docs
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         run: |
           mkdocs gh-deploy --force
