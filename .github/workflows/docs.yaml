@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - dev/rearchitect-and-remove-nbdev
+      - master
   pull_request:
 
 permissions:
@@ -31,6 +31,6 @@ jobs:
           mkdocs build
           
       - name: Deploy Docs
-        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev/rearchitect-and-remove-nbdev')
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         run: |
           mkdocs gh-deploy --force
