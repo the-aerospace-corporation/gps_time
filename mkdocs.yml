@@ -3,6 +3,7 @@ site_description: GPS Time representation and tools for Python
 site_author: The Aerospace Corporation
 repo_url: https://github.com/the-aerospace-corporation/gps_time
 repo_name: the-aerospace-corporation/gps_time
+site_url: https://the-aerospace-corporation.github.io/gps_time/
 
 markdown_extensions:
   - pymdownx.arithmatex:
