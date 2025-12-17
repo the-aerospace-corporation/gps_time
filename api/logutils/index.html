@@ -1,0 +1,3753 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="GPS Time representation and tools for Python">
+      
+      
+        <meta name="author" content="The Aerospace Corporation">
+      
+      
+      
+        <link rel="prev" href="../utilities/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>Logging - gps_time</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.618322db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#logging-utilities" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="gps_time" class="md-header__button md-logo" aria-label="gps_time" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            gps_time
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Logging
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/the-aerospace-corporation/gps_time" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    the-aerospace-corporation/gps_time
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="gps_time" class="md-nav__button md-logo" aria-label="gps_time" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    gps_time
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/the-aerospace-corporation/gps_time" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    the-aerospace-corporation/gps_time
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../math_background/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Math & Background
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced_examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Advanced Examples
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CONTRIBUTING/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../datetime/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datetime
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../leapseconds/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Leap Seconds
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../utilities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Utilities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Logging
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Logging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#gps_time.logutils" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        logutils
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gps_time.logutils.__all__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __all__
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gps_time.logutils.AlignedColorFormatter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AlignedColorFormatter
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AlignedColorFormatter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.AlignedColorFormatter.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __init__
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="__init__">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.AlignedColorFormatter.__init__--parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.AlignedColorFormatter.format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        format
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="format">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.AlignedColorFormatter.format--parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.AlignedColorFormatter.format--returns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Returns
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gps_time.logutils.BasicColorTheme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BasicColorTheme
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="BasicColorTheme">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.BasicColorTheme.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __init__
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="__init__">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.BasicColorTheme.__init__--parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.BasicColorTheme.__init__--attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Attributes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gps_time.logutils.BasicTheme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BasicTheme
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="BasicTheme">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.BasicTheme--class-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Class Attributes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.BasicTheme.__eq__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __eq__
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="__eq__">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.BasicTheme.__eq__--parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.BasicTheme.__eq__--returns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Returns
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.BasicTheme.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __init__
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="__init__">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.BasicTheme.__init__--parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.BasicTheme.__init__--attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Attributes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.BasicTheme.get_theme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_theme
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="get_theme">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.BasicTheme.get_theme--parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.BasicTheme.get_theme--returns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Returns
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gps_time.logutils.Colors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Colors
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Colors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.Colors--class-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Class Attributes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gps_time.logutils.ThemeField" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ThemeField
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ThemeField">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.ThemeField--parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.ThemeField--examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.ThemeField.__getitem__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __getitem__
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="__getitem__">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.ThemeField.__getitem__--parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.ThemeField.__getitem__--returns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Returns
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.ThemeField.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __init__
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="__init__">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.ThemeField.__init__--parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.ThemeField.__setitem__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __setitem__
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="__setitem__">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.ThemeField.__setitem__--parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gps_time.logutils.color_text" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        color_text
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="color_text">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.color_text--parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.color_text--returns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Returns
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gps_time.logutils.display_distro_statement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        display_distro_statement
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="display_distro_statement">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.display_distro_statement--parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#gps_time.logutils" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        logutils
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gps_time.logutils.__all__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __all__
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gps_time.logutils.AlignedColorFormatter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AlignedColorFormatter
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AlignedColorFormatter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.AlignedColorFormatter.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __init__
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="__init__">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.AlignedColorFormatter.__init__--parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.AlignedColorFormatter.format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        format
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="format">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.AlignedColorFormatter.format--parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.AlignedColorFormatter.format--returns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Returns
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gps_time.logutils.BasicColorTheme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BasicColorTheme
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="BasicColorTheme">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.BasicColorTheme.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __init__
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="__init__">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.BasicColorTheme.__init__--parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.BasicColorTheme.__init__--attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Attributes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gps_time.logutils.BasicTheme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BasicTheme
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="BasicTheme">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.BasicTheme--class-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Class Attributes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.BasicTheme.__eq__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __eq__
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="__eq__">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.BasicTheme.__eq__--parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.BasicTheme.__eq__--returns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Returns
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.BasicTheme.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __init__
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="__init__">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.BasicTheme.__init__--parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.BasicTheme.__init__--attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Attributes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.BasicTheme.get_theme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_theme
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="get_theme">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.BasicTheme.get_theme--parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.BasicTheme.get_theme--returns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Returns
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gps_time.logutils.Colors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Colors
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Colors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.Colors--class-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Class Attributes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gps_time.logutils.ThemeField" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ThemeField
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ThemeField">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.ThemeField--parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.ThemeField--examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.ThemeField.__getitem__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __getitem__
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="__getitem__">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.ThemeField.__getitem__--parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.ThemeField.__getitem__--returns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Returns
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.ThemeField.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __init__
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="__init__">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.ThemeField.__init__--parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.ThemeField.__setitem__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __setitem__
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="__setitem__">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.ThemeField.__setitem__--parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gps_time.logutils.color_text" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        color_text
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="color_text">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.color_text--parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.color_text--returns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Returns
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gps_time.logutils.display_distro_statement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        display_distro_statement
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="display_distro_statement">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gps_time.logutils.display_distro_statement--parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="logging-utilities">Logging Utilities</h1>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="gps_time.logutils"></a>
+    <div class="doc doc-contents first">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="gps_time.logutils.__all__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;display_distro_statement&#39;</span><span class="p">,</span> <span class="s1">&#39;Colors&#39;</span><span class="p">,</span> <span class="s1">&#39;ThemeField&#39;</span><span class="p">,</span> <span class="s1">&#39;color_text&#39;</span><span class="p">,</span> <span class="s1">&#39;BasicTheme&#39;</span><span class="p">,</span> <span class="s1">&#39;BasicColorTheme&#39;</span><span class="p">,</span> <span class="s1">&#39;AlignedColorFormatter&#39;</span><span class="p">]</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Copyright 2020 The Aerospace Corporation</p>
+
+    </div>
+
+</div>
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="gps_time.logutils.AlignedColorFormatter" class="doc doc-heading">
+            <code>AlignedColorFormatter</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="logging.Formatter">Formatter</span></code></p>
+
+
+
+        <p>Logging formatter to display aligned meta data of date with ms time stamp,
+logger name, line number, and log level.</p>
+
+
+
+
+
+
+
+
+              <details class="mkdocstrings-source">
+                <summary>Source code in <code>gps_time/logutils.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">374</span>
+<span class="normal">375</span>
+<span class="normal">376</span>
+<span class="normal">377</span>
+<span class="normal">378</span>
+<span class="normal">379</span>
+<span class="normal">380</span>
+<span class="normal">381</span>
+<span class="normal">382</span>
+<span class="normal">383</span>
+<span class="normal">384</span>
+<span class="normal">385</span>
+<span class="normal">386</span>
+<span class="normal">387</span>
+<span class="normal">388</span>
+<span class="normal">389</span>
+<span class="normal">390</span>
+<span class="normal">391</span>
+<span class="normal">392</span>
+<span class="normal">393</span>
+<span class="normal">394</span>
+<span class="normal">395</span>
+<span class="normal">396</span>
+<span class="normal">397</span>
+<span class="normal">398</span>
+<span class="normal">399</span>
+<span class="normal">400</span>
+<span class="normal">401</span>
+<span class="normal">402</span>
+<span class="normal">403</span>
+<span class="normal">404</span>
+<span class="normal">405</span>
+<span class="normal">406</span>
+<span class="normal">407</span>
+<span class="normal">408</span>
+<span class="normal">409</span>
+<span class="normal">410</span>
+<span class="normal">411</span>
+<span class="normal">412</span>
+<span class="normal">413</span>
+<span class="normal">414</span>
+<span class="normal">415</span>
+<span class="normal">416</span>
+<span class="normal">417</span>
+<span class="normal">418</span>
+<span class="normal">419</span>
+<span class="normal">420</span>
+<span class="normal">421</span>
+<span class="normal">422</span>
+<span class="normal">423</span>
+<span class="normal">424</span>
+<span class="normal">425</span>
+<span class="normal">426</span>
+<span class="normal">427</span>
+<span class="normal">428</span>
+<span class="normal">429</span>
+<span class="normal">430</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">AlignedColorFormatter</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Logging formatter to display aligned meta data of date with ms time stamp,</span>
+<span class="sd">    logger name, line number, and log level.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">width</span> <span class="o">=</span> <span class="mi">24</span>
+    <span class="n">datefmt</span> <span class="o">=</span> <span class="s2">&quot;%I:%M:%S&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theme</span><span class="p">:</span> <span class="n">BasicTheme</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates the formatted text described and applies a theme to the text.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        theme: BasicTheme</span>
+<span class="sd">            Theme derived from basic theme to apply to text</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">theme</span> <span class="o">=</span> <span class="n">theme</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">LogRecord</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Applies the desired format to a string passed to one of the log messages.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        record: logging.LogRecord</span>
+<span class="sd">            Data structure containing various log parameters.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            String with applied format and theme</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">record</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">getMessage</span><span class="p">()</span>
+        <span class="n">level</span> <span class="o">=</span> <span class="n">color_text</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">levelname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">theme</span><span class="o">.</span><span class="n">level_color</span><span class="p">[</span><span class="n">record</span><span class="o">.</span><span class="n">levelname</span><span class="p">])</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.</span><span class="si">%03d</span><span class="s2"> :: </span><span class="si">%+50s</span><span class="s2"> :: </span><span class="si">%-4s</span><span class="s2"> :: </span><span class="si">%-19s</span><span class="s2"> | </span><span class="si">%s</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">formatTime</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="n">AlignedColorFormatter</span><span class="o">.</span><span class="n">datefmt</span><span class="p">),</span>
+            <span class="n">record</span><span class="o">.</span><span class="n">msecs</span><span class="p">,</span>
+            <span class="n">record</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">record</span><span class="o">.</span><span class="n">lineno</span><span class="p">,</span>
+            <span class="n">level</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">theme</span><span class="o">.</span><span class="n">prompt</span><span class="p">[</span><span class="n">record</span><span class="o">.</span><span class="n">levelname</span><span class="p">],</span>
+        <span class="p">)</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="n">color_text</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">message</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">theme</span><span class="o">.</span><span class="n">text_color</span><span class="p">[</span><span class="n">record</span><span class="o">.</span><span class="n">levelname</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">record</span><span class="o">.</span><span class="n">exc_info</span><span class="p">:</span>
+            <span class="c1"># Cache the traceback text to avoid converting it multiple times</span>
+            <span class="c1"># (it&#39;s constant anyway)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">record</span><span class="o">.</span><span class="n">exc_text</span><span class="p">:</span>
+                <span class="n">record</span><span class="o">.</span><span class="n">exc_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">formatException</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">exc_info</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">record</span><span class="o">.</span><span class="n">exc_text</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span> <span class="o">!=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">:</span>
+                    <span class="n">s</span> <span class="o">=</span> <span class="n">s</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="n">s</span> <span class="o">+</span> <span class="n">record</span><span class="o">.</span><span class="n">exc_text</span>
+        <span class="k">return</span> <span class="n">s</span>
+</code></pre></div></td></tr></table></div>
+              </details>
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="gps_time.logutils.AlignedColorFormatter.__init__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">theme</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Creates the formatted text described and applies a theme to the text.</p>
+<h5 id="gps_time.logutils.AlignedColorFormatter.__init__--parameters">Parameters</h5>
+<p>theme: BasicTheme
+    Theme derived from basic theme to apply to text</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>gps_time/logutils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">383</span>
+<span class="normal">384</span>
+<span class="normal">385</span>
+<span class="normal">386</span>
+<span class="normal">387</span>
+<span class="normal">388</span>
+<span class="normal">389</span>
+<span class="normal">390</span>
+<span class="normal">391</span>
+<span class="normal">392</span>
+<span class="normal">393</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theme</span><span class="p">:</span> <span class="n">BasicTheme</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates the formatted text described and applies a theme to the text.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    theme: BasicTheme</span>
+<span class="sd">        Theme derived from basic theme to apply to text</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">theme</span> <span class="o">=</span> <span class="n">theme</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="gps_time.logutils.AlignedColorFormatter.format" class="doc doc-heading">
+            <code class="highlight language-python"><span class="nb">format</span><span class="p">(</span><span class="n">record</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Applies the desired format to a string passed to one of the log messages.</p>
+<h5 id="gps_time.logutils.AlignedColorFormatter.format--parameters">Parameters</h5>
+<p>record: logging.LogRecord
+    Data structure containing various log parameters.</p>
+<h5 id="gps_time.logutils.AlignedColorFormatter.format--returns">Returns</h5>
+<p>str
+    String with applied format and theme</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>gps_time/logutils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">395</span>
+<span class="normal">396</span>
+<span class="normal">397</span>
+<span class="normal">398</span>
+<span class="normal">399</span>
+<span class="normal">400</span>
+<span class="normal">401</span>
+<span class="normal">402</span>
+<span class="normal">403</span>
+<span class="normal">404</span>
+<span class="normal">405</span>
+<span class="normal">406</span>
+<span class="normal">407</span>
+<span class="normal">408</span>
+<span class="normal">409</span>
+<span class="normal">410</span>
+<span class="normal">411</span>
+<span class="normal">412</span>
+<span class="normal">413</span>
+<span class="normal">414</span>
+<span class="normal">415</span>
+<span class="normal">416</span>
+<span class="normal">417</span>
+<span class="normal">418</span>
+<span class="normal">419</span>
+<span class="normal">420</span>
+<span class="normal">421</span>
+<span class="normal">422</span>
+<span class="normal">423</span>
+<span class="normal">424</span>
+<span class="normal">425</span>
+<span class="normal">426</span>
+<span class="normal">427</span>
+<span class="normal">428</span>
+<span class="normal">429</span>
+<span class="normal">430</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">LogRecord</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Applies the desired format to a string passed to one of the log messages.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    record: logging.LogRecord</span>
+<span class="sd">        Data structure containing various log parameters.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        String with applied format and theme</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">record</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">getMessage</span><span class="p">()</span>
+    <span class="n">level</span> <span class="o">=</span> <span class="n">color_text</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">levelname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">theme</span><span class="o">.</span><span class="n">level_color</span><span class="p">[</span><span class="n">record</span><span class="o">.</span><span class="n">levelname</span><span class="p">])</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.</span><span class="si">%03d</span><span class="s2"> :: </span><span class="si">%+50s</span><span class="s2"> :: </span><span class="si">%-4s</span><span class="s2"> :: </span><span class="si">%-19s</span><span class="s2"> | </span><span class="si">%s</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">formatTime</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="n">AlignedColorFormatter</span><span class="o">.</span><span class="n">datefmt</span><span class="p">),</span>
+        <span class="n">record</span><span class="o">.</span><span class="n">msecs</span><span class="p">,</span>
+        <span class="n">record</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">record</span><span class="o">.</span><span class="n">lineno</span><span class="p">,</span>
+        <span class="n">level</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">theme</span><span class="o">.</span><span class="n">prompt</span><span class="p">[</span><span class="n">record</span><span class="o">.</span><span class="n">levelname</span><span class="p">],</span>
+    <span class="p">)</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">color_text</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">message</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">theme</span><span class="o">.</span><span class="n">text_color</span><span class="p">[</span><span class="n">record</span><span class="o">.</span><span class="n">levelname</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">record</span><span class="o">.</span><span class="n">exc_info</span><span class="p">:</span>
+        <span class="c1"># Cache the traceback text to avoid converting it multiple times</span>
+        <span class="c1"># (it&#39;s constant anyway)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">record</span><span class="o">.</span><span class="n">exc_text</span><span class="p">:</span>
+            <span class="n">record</span><span class="o">.</span><span class="n">exc_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">formatException</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">exc_info</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">record</span><span class="o">.</span><span class="n">exc_text</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span> <span class="o">!=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">:</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="n">s</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">s</span> <span class="o">+</span> <span class="n">record</span><span class="o">.</span><span class="n">exc_text</span>
+    <span class="k">return</span> <span class="n">s</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="gps_time.logutils.BasicColorTheme" class="doc doc-heading">
+            <code>BasicColorTheme</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="BasicTheme (gps_time.logutils.BasicTheme)" href="#gps_time.logutils.BasicTheme">BasicTheme</a></code></p>
+
+
+
+        <p>Theme for basic colored output where the logging level text is the same
+color as the log message. This class is a good example for how to create
+new themes by inheriting from the basic theme. The derived themes if any
+field is not overwritten just stays the same as the default one.</p>
+
+
+
+
+
+
+
+
+              <details class="mkdocstrings-source">
+                <summary>Source code in <code>gps_time/logutils.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span>
+<span class="normal">359</span>
+<span class="normal">360</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span>
+<span class="normal">367</span>
+<span class="normal">368</span>
+<span class="normal">369</span>
+<span class="normal">370</span>
+<span class="normal">371</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">BasicColorTheme</span><span class="p">(</span><span class="n">BasicTheme</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Theme for basic colored output where the logging level text is the same</span>
+<span class="sd">    color as the log message. This class is a good example for how to create</span>
+<span class="sd">    new themes by inheriting from the basic theme. The derived themes if any</span>
+<span class="sd">    field is not overwritten just stays the same as the default one.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theme_name</span><span class="o">=</span><span class="s2">&quot;color_theme&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Instantiates the theme.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        theme_name: str</span>
+<span class="sd">            Name of the theme</span>
+
+<span class="sd">        Attributes</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name: str</span>
+<span class="sd">             The name of the theme</span>
+<span class="sd">        prompt: str</span>
+<span class="sd">             First character(s) before the log message</span>
+<span class="sd">        tail: str</span>
+<span class="sd">             Final characters in the log message</span>
+<span class="sd">        level_color: ThemeField</span>
+<span class="sd">             The color of the log level text displayed in the message. In this</span>
+<span class="sd">             case [green, white, yellow, purple, red] from DEBUG to CRITICAL</span>
+<span class="sd">        text_color: ThemeField</span>
+<span class="sd">            The color of the text displayed at each logging level. Same</span>
+<span class="sd">            colors as level name</span>
+<span class="sd">        theme_name</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">theme_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prompt</span> <span class="o">=</span> <span class="n">ThemeField</span><span class="p">(</span><span class="o">*</span><span class="p">([</span><span class="s2">&quot;&gt;&gt;&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">5</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_color</span> <span class="o">=</span> <span class="n">ThemeField</span><span class="p">(</span>
+            <span class="n">DEBUG</span><span class="o">=</span><span class="n">Colors</span><span class="o">.</span><span class="n">green</span><span class="p">,</span>
+            <span class="n">INFO</span><span class="o">=</span><span class="n">Colors</span><span class="o">.</span><span class="n">white</span><span class="p">,</span>
+            <span class="n">WARNING</span><span class="o">=</span><span class="n">Colors</span><span class="o">.</span><span class="n">yellow</span><span class="p">,</span>
+            <span class="n">ERROR</span><span class="o">=</span><span class="n">Colors</span><span class="o">.</span><span class="n">purple</span><span class="p">,</span>
+            <span class="n">CRITICAL</span><span class="o">=</span><span class="n">Colors</span><span class="o">.</span><span class="n">red</span><span class="p">,</span>
+        <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+              </details>
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="gps_time.logutils.BasicColorTheme.__init__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">theme_name</span><span class="o">=</span><span class="s1">&#39;color_theme&#39;</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Instantiates the theme.</p>
+<h5 id="gps_time.logutils.BasicColorTheme.__init__--parameters">Parameters</h5>
+<p>theme_name: str
+    Name of the theme</p>
+<h5 id="gps_time.logutils.BasicColorTheme.__init__--attributes">Attributes</h5>
+<p>name: str
+     The name of the theme
+prompt: str
+     First character(s) before the log message
+tail: str
+     Final characters in the log message
+level_color: ThemeField
+     The color of the log level text displayed in the message. In this
+     case [green, white, yellow, purple, red] from DEBUG to CRITICAL
+text_color: ThemeField
+    The color of the text displayed at each logging level. Same
+    colors as level name
+theme_name</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>gps_time/logutils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span>
+<span class="normal">359</span>
+<span class="normal">360</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span>
+<span class="normal">367</span>
+<span class="normal">368</span>
+<span class="normal">369</span>
+<span class="normal">370</span>
+<span class="normal">371</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theme_name</span><span class="o">=</span><span class="s2">&quot;color_theme&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Instantiates the theme.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    theme_name: str</span>
+<span class="sd">        Name of the theme</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name: str</span>
+<span class="sd">         The name of the theme</span>
+<span class="sd">    prompt: str</span>
+<span class="sd">         First character(s) before the log message</span>
+<span class="sd">    tail: str</span>
+<span class="sd">         Final characters in the log message</span>
+<span class="sd">    level_color: ThemeField</span>
+<span class="sd">         The color of the log level text displayed in the message. In this</span>
+<span class="sd">         case [green, white, yellow, purple, red] from DEBUG to CRITICAL</span>
+<span class="sd">    text_color: ThemeField</span>
+<span class="sd">        The color of the text displayed at each logging level. Same</span>
+<span class="sd">        colors as level name</span>
+<span class="sd">    theme_name</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">theme_name</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">prompt</span> <span class="o">=</span> <span class="n">ThemeField</span><span class="p">(</span><span class="o">*</span><span class="p">([</span><span class="s2">&quot;&gt;&gt;&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">text_color</span> <span class="o">=</span> <span class="n">ThemeField</span><span class="p">(</span>
+        <span class="n">DEBUG</span><span class="o">=</span><span class="n">Colors</span><span class="o">.</span><span class="n">green</span><span class="p">,</span>
+        <span class="n">INFO</span><span class="o">=</span><span class="n">Colors</span><span class="o">.</span><span class="n">white</span><span class="p">,</span>
+        <span class="n">WARNING</span><span class="o">=</span><span class="n">Colors</span><span class="o">.</span><span class="n">yellow</span><span class="p">,</span>
+        <span class="n">ERROR</span><span class="o">=</span><span class="n">Colors</span><span class="o">.</span><span class="n">purple</span><span class="p">,</span>
+        <span class="n">CRITICAL</span><span class="o">=</span><span class="n">Colors</span><span class="o">.</span><span class="n">red</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="gps_time.logutils.BasicTheme" class="doc doc-heading">
+            <code>BasicTheme</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="object">object</span></code></p>
+
+
+
+        <p>The base object used in applying themes. A theme is just a collection of
+ThemeField objects for different portions of the output log. This class
+is meant to be inherited from for other themes and the desired fields
+overwritten with new colors.</p>
+<h4 id="gps_time.logutils.BasicTheme--class-attributes">Class Attributes</h4>
+<p>Themes
+    A list of every theme. This allows for themes to be gotten globally.</p>
+
+
+
+
+
+
+
+
+              <details class="mkdocstrings-source">
+                <summary>Source code in <code>gps_time/logutils.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">BasicTheme</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The base object used in applying themes. A theme is just a collection of</span>
+<span class="sd">    ThemeField objects for different portions of the output log. This class</span>
+<span class="sd">    is meant to be inherited from for other themes and the desired fields</span>
+<span class="sd">    overwritten with new colors.</span>
+
+<span class="sd">    Class Attributes</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    Themes</span>
+<span class="sd">        A list of every theme. This allows for themes to be gotten globally.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">THEMES</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_theme</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Everytime a theme is instantiated its name is added to the THEMES</span>
+<span class="sd">        class attribute. This name is used to access any theme defined in</span>
+<span class="sd">        runtime by a common theme.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name: str</span>
+<span class="sd">            Name of theme to be indexed</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Optional[BasicTheme]</span>
+<span class="sd">            Theme corresponding to input name. If no theme by that name exists</span>
+<span class="sd">            None is returned.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">theme</span> <span class="ow">in</span> <span class="n">BasicTheme</span><span class="o">.</span><span class="n">THEMES</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">theme</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">theme</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theme_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a theme and adds the theme to the THEMES class attribute for</span>
+<span class="sd">        later indexing.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        theme_name: str</span>
+<span class="sd">            Name of the theme</span>
+
+<span class="sd">        Attributes</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name: str</span>
+<span class="sd">             The name of the theme</span>
+<span class="sd">        prompt: str</span>
+<span class="sd">             First character(s) before the log message</span>
+<span class="sd">        tail: str</span>
+<span class="sd">             Final characters in the log message</span>
+<span class="sd">        level_color: ThemeField</span>
+<span class="sd">             The color of the log level text displayed in the message</span>
+<span class="sd">        text_color: ThemeField</span>
+<span class="sd">            The color of the text displayed at each logging level</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># if theme_name in BasicTheme.THEMES:</span>
+        <span class="c1">#     raise ValueError(&quot;Theme {} already exists&quot;.format(theme_name))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">theme_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prompt</span> <span class="o">=</span> <span class="n">ThemeField</span><span class="p">(</span><span class="o">*</span><span class="p">([</span><span class="s2">&quot;&gt;&gt;&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">5</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tail</span> <span class="o">=</span> <span class="n">ThemeField</span><span class="p">(</span><span class="o">*</span><span class="p">([</span><span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">5</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">level_color</span> <span class="o">=</span> <span class="n">ThemeField</span><span class="p">(</span>
+            <span class="n">DEBUG</span><span class="o">=</span><span class="n">Colors</span><span class="o">.</span><span class="n">green</span><span class="p">,</span>
+            <span class="n">INFO</span><span class="o">=</span><span class="n">Colors</span><span class="o">.</span><span class="n">white</span><span class="p">,</span>
+            <span class="n">WARNING</span><span class="o">=</span><span class="n">Colors</span><span class="o">.</span><span class="n">yellow</span><span class="p">,</span>
+            <span class="n">ERROR</span><span class="o">=</span><span class="n">Colors</span><span class="o">.</span><span class="n">purple</span><span class="p">,</span>
+            <span class="n">CRITICAL</span><span class="o">=</span><span class="n">Colors</span><span class="o">.</span><span class="n">red</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_color</span> <span class="o">=</span> <span class="n">ThemeField</span><span class="p">(</span>
+            <span class="n">DEBUG</span><span class="o">=</span><span class="n">Colors</span><span class="o">.</span><span class="n">normal</span><span class="p">,</span>
+            <span class="n">INFO</span><span class="o">=</span><span class="n">Colors</span><span class="o">.</span><span class="n">normal</span><span class="p">,</span>
+            <span class="n">WARNING</span><span class="o">=</span><span class="n">Colors</span><span class="o">.</span><span class="n">normal</span><span class="p">,</span>
+            <span class="n">ERROR</span><span class="o">=</span><span class="n">Colors</span><span class="o">.</span><span class="n">normal</span><span class="p">,</span>
+            <span class="n">CRITICAL</span><span class="o">=</span><span class="n">Colors</span><span class="o">.</span><span class="n">normal</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">BasicTheme</span><span class="o">.</span><span class="n">THEMES</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compares the name of self to a string and determines if the two</span>
+<span class="sd">        are the same using == operator.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        other_name: str</span>
+<span class="sd">            Name of other theme</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if self.name is equal to the other name (case-sensitive)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">other_name</span>
+</code></pre></div></td></tr></table></div>
+              </details>
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="gps_time.logutils.BasicTheme.__eq__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__eq__</span><span class="p">(</span><span class="n">other_name</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Compares the name of self to a string and determines if the two
+are the same using == operator.</p>
+<h5 id="gps_time.logutils.BasicTheme.__eq__--parameters">Parameters</h5>
+<p>other_name: str
+    Name of other theme</p>
+<h5 id="gps_time.logutils.BasicTheme.__eq__--returns">Returns</h5>
+<p>bool
+    True if self.name is equal to the other name (case-sensitive)</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>gps_time/logutils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compares the name of self to a string and determines if the two</span>
+<span class="sd">    are the same using == operator.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    other_name: str</span>
+<span class="sd">        Name of other theme</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        True if self.name is equal to the other name (case-sensitive)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">other_name</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="gps_time.logutils.BasicTheme.__init__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">theme_name</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Creates a theme and adds the theme to the THEMES class attribute for
+later indexing.</p>
+<h5 id="gps_time.logutils.BasicTheme.__init__--parameters">Parameters</h5>
+<p>theme_name: str
+    Name of the theme</p>
+<h5 id="gps_time.logutils.BasicTheme.__init__--attributes">Attributes</h5>
+<p>name: str
+     The name of the theme
+prompt: str
+     First character(s) before the log message
+tail: str
+     Final characters in the log message
+level_color: ThemeField
+     The color of the log level text displayed in the message
+text_color: ThemeField
+    The color of the text displayed at each logging level</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>gps_time/logutils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theme_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates a theme and adds the theme to the THEMES class attribute for</span>
+<span class="sd">    later indexing.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    theme_name: str</span>
+<span class="sd">        Name of the theme</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name: str</span>
+<span class="sd">         The name of the theme</span>
+<span class="sd">    prompt: str</span>
+<span class="sd">         First character(s) before the log message</span>
+<span class="sd">    tail: str</span>
+<span class="sd">         Final characters in the log message</span>
+<span class="sd">    level_color: ThemeField</span>
+<span class="sd">         The color of the log level text displayed in the message</span>
+<span class="sd">    text_color: ThemeField</span>
+<span class="sd">        The color of the text displayed at each logging level</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># if theme_name in BasicTheme.THEMES:</span>
+    <span class="c1">#     raise ValueError(&quot;Theme {} already exists&quot;.format(theme_name))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">theme_name</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">prompt</span> <span class="o">=</span> <span class="n">ThemeField</span><span class="p">(</span><span class="o">*</span><span class="p">([</span><span class="s2">&quot;&gt;&gt;&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">tail</span> <span class="o">=</span> <span class="n">ThemeField</span><span class="p">(</span><span class="o">*</span><span class="p">([</span><span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">level_color</span> <span class="o">=</span> <span class="n">ThemeField</span><span class="p">(</span>
+        <span class="n">DEBUG</span><span class="o">=</span><span class="n">Colors</span><span class="o">.</span><span class="n">green</span><span class="p">,</span>
+        <span class="n">INFO</span><span class="o">=</span><span class="n">Colors</span><span class="o">.</span><span class="n">white</span><span class="p">,</span>
+        <span class="n">WARNING</span><span class="o">=</span><span class="n">Colors</span><span class="o">.</span><span class="n">yellow</span><span class="p">,</span>
+        <span class="n">ERROR</span><span class="o">=</span><span class="n">Colors</span><span class="o">.</span><span class="n">purple</span><span class="p">,</span>
+        <span class="n">CRITICAL</span><span class="o">=</span><span class="n">Colors</span><span class="o">.</span><span class="n">red</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">text_color</span> <span class="o">=</span> <span class="n">ThemeField</span><span class="p">(</span>
+        <span class="n">DEBUG</span><span class="o">=</span><span class="n">Colors</span><span class="o">.</span><span class="n">normal</span><span class="p">,</span>
+        <span class="n">INFO</span><span class="o">=</span><span class="n">Colors</span><span class="o">.</span><span class="n">normal</span><span class="p">,</span>
+        <span class="n">WARNING</span><span class="o">=</span><span class="n">Colors</span><span class="o">.</span><span class="n">normal</span><span class="p">,</span>
+        <span class="n">ERROR</span><span class="o">=</span><span class="n">Colors</span><span class="o">.</span><span class="n">normal</span><span class="p">,</span>
+        <span class="n">CRITICAL</span><span class="o">=</span><span class="n">Colors</span><span class="o">.</span><span class="n">normal</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">BasicTheme</span><span class="o">.</span><span class="n">THEMES</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="gps_time.logutils.BasicTheme.get_theme" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">get_theme</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Everytime a theme is instantiated its name is added to the THEMES
+class attribute. This name is used to access any theme defined in
+runtime by a common theme.</p>
+<h5 id="gps_time.logutils.BasicTheme.get_theme--parameters">Parameters</h5>
+<p>name: str
+    Name of theme to be indexed</p>
+<h5 id="gps_time.logutils.BasicTheme.get_theme--returns">Returns</h5>
+<p>Optional[BasicTheme]
+    Theme corresponding to input name. If no theme by that name exists
+    None is returned.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>gps_time/logutils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_theme</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Everytime a theme is instantiated its name is added to the THEMES</span>
+<span class="sd">    class attribute. This name is used to access any theme defined in</span>
+<span class="sd">    runtime by a common theme.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name: str</span>
+<span class="sd">        Name of theme to be indexed</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Optional[BasicTheme]</span>
+<span class="sd">        Theme corresponding to input name. If no theme by that name exists</span>
+<span class="sd">        None is returned.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">theme</span> <span class="ow">in</span> <span class="n">BasicTheme</span><span class="o">.</span><span class="n">THEMES</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">theme</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">theme</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="gps_time.logutils.Colors" class="doc doc-heading">
+            <code>Colors</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Data structure containing color codes.</p>
+<p>Data structure containing character codes which change text color of a
+bash terminal of all following characters.</p>
+<h4 id="gps_time.logutils.Colors--class-attributes">Class Attributes</h4>
+<p>normal : str
+    Resets text colors in the terminal to default colors
+black : str
+    Sets text color in terminal to black
+red : str
+    Sets text color in terminal to red
+green : str
+    Sets text color in terminal to green
+yellow : str
+    Sets text color in terminal to yellow
+blue : str
+    Sets text color in terminal to blue
+purple : str
+    Sets text color in terminal to purple
+cyan : str
+    Sets text color in terminal to cyan
+white : str
+    Sets text color in terminal to white
+red_highlight : str
+    Sets text background color to red
+green_highlight : str
+    Sets text background color to green
+yellow_highlight : str
+    Sets text background color to yellow
+blue_highlight : str
+    Sets text background color to blue
+purple_highlight : str
+    Sets text background color to purple
+cyan_highlight : str
+    Sets text background color to cyan
+white_highlight : str
+    Sets text background color to white
+bold : str
+    Sets text thickness larger
+uline : str
+    Adds an underline to text
+blink : str
+    Makes the text blink at 1Hz
+invert : str
+    Inverts the background and text colors</p>
+
+
+
+
+
+
+
+
+              <details class="mkdocstrings-source">
+                <summary>Source code in <code>gps_time/logutils.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Colors</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Data structure containing color codes.</span>
+
+<span class="sd">    Data structure containing character codes which change text color of a</span>
+<span class="sd">    bash terminal of all following characters.</span>
+
+<span class="sd">    Class Attributes</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    normal : str</span>
+<span class="sd">        Resets text colors in the terminal to default colors</span>
+<span class="sd">    black : str</span>
+<span class="sd">        Sets text color in terminal to black</span>
+<span class="sd">    red : str</span>
+<span class="sd">        Sets text color in terminal to red</span>
+<span class="sd">    green : str</span>
+<span class="sd">        Sets text color in terminal to green</span>
+<span class="sd">    yellow : str</span>
+<span class="sd">        Sets text color in terminal to yellow</span>
+<span class="sd">    blue : str</span>
+<span class="sd">        Sets text color in terminal to blue</span>
+<span class="sd">    purple : str</span>
+<span class="sd">        Sets text color in terminal to purple</span>
+<span class="sd">    cyan : str</span>
+<span class="sd">        Sets text color in terminal to cyan</span>
+<span class="sd">    white : str</span>
+<span class="sd">        Sets text color in terminal to white</span>
+<span class="sd">    red_highlight : str</span>
+<span class="sd">        Sets text background color to red</span>
+<span class="sd">    green_highlight : str</span>
+<span class="sd">        Sets text background color to green</span>
+<span class="sd">    yellow_highlight : str</span>
+<span class="sd">        Sets text background color to yellow</span>
+<span class="sd">    blue_highlight : str</span>
+<span class="sd">        Sets text background color to blue</span>
+<span class="sd">    purple_highlight : str</span>
+<span class="sd">        Sets text background color to purple</span>
+<span class="sd">    cyan_highlight : str</span>
+<span class="sd">        Sets text background color to cyan</span>
+<span class="sd">    white_highlight : str</span>
+<span class="sd">        Sets text background color to white</span>
+<span class="sd">    bold : str</span>
+<span class="sd">        Sets text thickness larger</span>
+<span class="sd">    uline : str</span>
+<span class="sd">        Adds an underline to text</span>
+<span class="sd">    blink : str</span>
+<span class="sd">        Makes the text blink at 1Hz</span>
+<span class="sd">    invert : str</span>
+<span class="sd">        Inverts the background and text colors</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">normal</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[0m&quot;</span>
+    <span class="n">black</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[30m&quot;</span>
+    <span class="n">red</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[31m&quot;</span>
+    <span class="n">green</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[32m&quot;</span>
+    <span class="n">yellow</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[33m&quot;</span>
+    <span class="n">blue</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[34m&quot;</span>
+    <span class="n">purple</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[35m&quot;</span>
+    <span class="n">cyan</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[36m&quot;</span>
+    <span class="n">white</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[37m&quot;</span>
+
+    <span class="n">red_highlight</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[41m&quot;</span>
+    <span class="n">green_highlight</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[42m&quot;</span>
+    <span class="n">yellow_highlight</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[43m&quot;</span>
+    <span class="n">blue_highlight</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[44m&quot;</span>
+    <span class="n">purple_highlight</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[45m&quot;</span>
+    <span class="n">cyan_highlight</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[46m&quot;</span>
+    <span class="n">white_highlight</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[47m&quot;</span>
+
+    <span class="n">bold</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[1m&quot;</span>
+    <span class="n">uline</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[4m&quot;</span>
+    <span class="n">blink</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[5m&quot;</span>
+    <span class="n">invert</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[7m&quot;</span>
+</code></pre></div></td></tr></table></div>
+              </details>
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="gps_time.logutils.ThemeField" class="doc doc-heading">
+            <code>ThemeField</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="object">object</span></code></p>
+
+
+
+        <p>Various components of a log can have colors edited such as the prompt,
+message, etc. A message field maps the colors to various log levels
+and indexed using logging levels.</p>
+<h4 id="gps_time.logutils.ThemeField--parameters">Parameters</h4>
+<p>DEBUG: str
+    Str color code defined in Colors class for correcsponding log level
+INFO: str
+    Str color code defined in Colors class for correcsponding log level
+WARNING: str
+    Str color code defined in Colors class for correcsponding log level
+ERROR: str
+    Str color code defined in Colors class for correcsponding log level
+CRITICAL: str
+    Str color code defined in Colors class for correcsponding log level</p>
+<h4 id="gps_time.logutils.ThemeField--examples">Examples</h4>
+<pre><code>&gt;&gt; field = ThemeField(DEBUG=Colors.green,
+                      INFO=Colors.white,
+                      WARNING=Colors.yellow,
+                      ERROR=Colors.purple,
+                      CRITICAL=Colors.red)
+</code></pre>
+
+
+
+
+
+
+
+
+              <details class="mkdocstrings-source">
+                <summary>Source code in <code>gps_time/logutils.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ThemeField</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Various components of a log can have colors edited such as the prompt,</span>
+<span class="sd">    message, etc. A message field maps the colors to various log levels</span>
+<span class="sd">    and indexed using logging levels.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    DEBUG: str</span>
+<span class="sd">        Str color code defined in Colors class for correcsponding log level</span>
+<span class="sd">    INFO: str</span>
+<span class="sd">        Str color code defined in Colors class for correcsponding log level</span>
+<span class="sd">    WARNING: str</span>
+<span class="sd">        Str color code defined in Colors class for correcsponding log level</span>
+<span class="sd">    ERROR: str</span>
+<span class="sd">        Str color code defined in Colors class for correcsponding log level</span>
+<span class="sd">    CRITICAL: str</span>
+<span class="sd">        Str color code defined in Colors class for correcsponding log level</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt; field = ThemeField(DEBUG=Colors.green,</span>
+<span class="sd">                              INFO=Colors.white,</span>
+<span class="sd">                              WARNING=Colors.yellow,</span>
+<span class="sd">                              ERROR=Colors.purple,</span>
+<span class="sd">                              CRITICAL=Colors.red)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">DEBUG</span><span class="p">,</span> <span class="n">INFO</span><span class="p">,</span> <span class="n">WARNING</span><span class="p">,</span> <span class="n">ERROR</span><span class="p">,</span> <span class="n">CRITICAL</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes logging levels to a color</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        DEBUG:</span>
+<span class="sd">            Str color code defined in colors class for corresponding log level</span>
+<span class="sd">        INFO:</span>
+<span class="sd">            Str color code defined in colors class for corresponding log level</span>
+<span class="sd">        WARNING:</span>
+<span class="sd">            Str color code defined in colors class for corresponding log level</span>
+<span class="sd">        ERROR:</span>
+<span class="sd">            Str color code defined in colors class for corresponding log level</span>
+<span class="sd">        CRITICAL:</span>
+<span class="sd">            Str color code defined in colors class for corresponding log level</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">DEBUG</span> <span class="o">=</span> <span class="n">DEBUG</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">INFO</span> <span class="o">=</span> <span class="n">INFO</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">WARNING</span> <span class="o">=</span> <span class="n">WARNING</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ERROR</span> <span class="o">=</span> <span class="n">ERROR</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">CRITICAL</span> <span class="o">=</span> <span class="n">CRITICAL</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets an attribute using [] indexing. In logging formatters record.level</span>
+<span class="sd">        is a string which can be used to index this class.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        item: str</span>
+<span class="sd">            Formatter record.level to return value for</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            Color code for corresponding log level</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets a color value using [] = indexing to change value with Formatter</span>
+<span class="sd">        record.level</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        key: str</span>
+<span class="sd">            Formatter record.level or string matching attribute name</span>
+<span class="sd">        value: str</span>
+<span class="sd">            New color code to set the level to</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+              </details>
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="gps_time.logutils.ThemeField.__getitem__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__getitem__</span><span class="p">(</span><span class="n">item</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Gets an attribute using [] indexing. In logging formatters record.level
+is a string which can be used to index this class.</p>
+<h5 id="gps_time.logutils.ThemeField.__getitem__--parameters">Parameters</h5>
+<p>item: str
+    Formatter record.level to return value for</p>
+<h5 id="gps_time.logutils.ThemeField.__getitem__--returns">Returns</h5>
+<p>str
+    Color code for corresponding log level</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>gps_time/logutils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Gets an attribute using [] indexing. In logging formatters record.level</span>
+<span class="sd">    is a string which can be used to index this class.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    item: str</span>
+<span class="sd">        Formatter record.level to return value for</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        Color code for corresponding log level</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="gps_time.logutils.ThemeField.__init__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">DEBUG</span><span class="p">,</span> <span class="n">INFO</span><span class="p">,</span> <span class="n">WARNING</span><span class="p">,</span> <span class="n">ERROR</span><span class="p">,</span> <span class="n">CRITICAL</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Initializes logging levels to a color</p>
+<h5 id="gps_time.logutils.ThemeField.__init__--parameters">Parameters</h5>
+<p>DEBUG:
+    Str color code defined in colors class for corresponding log level
+INFO:
+    Str color code defined in colors class for corresponding log level
+WARNING:
+    Str color code defined in colors class for corresponding log level
+ERROR:
+    Str color code defined in colors class for corresponding log level
+CRITICAL:
+    Str color code defined in colors class for corresponding log level</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>gps_time/logutils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">DEBUG</span><span class="p">,</span> <span class="n">INFO</span><span class="p">,</span> <span class="n">WARNING</span><span class="p">,</span> <span class="n">ERROR</span><span class="p">,</span> <span class="n">CRITICAL</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initializes logging levels to a color</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    DEBUG:</span>
+<span class="sd">        Str color code defined in colors class for corresponding log level</span>
+<span class="sd">    INFO:</span>
+<span class="sd">        Str color code defined in colors class for corresponding log level</span>
+<span class="sd">    WARNING:</span>
+<span class="sd">        Str color code defined in colors class for corresponding log level</span>
+<span class="sd">    ERROR:</span>
+<span class="sd">        Str color code defined in colors class for corresponding log level</span>
+<span class="sd">    CRITICAL:</span>
+<span class="sd">        Str color code defined in colors class for corresponding log level</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">DEBUG</span> <span class="o">=</span> <span class="n">DEBUG</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">INFO</span> <span class="o">=</span> <span class="n">INFO</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">WARNING</span> <span class="o">=</span> <span class="n">WARNING</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">ERROR</span> <span class="o">=</span> <span class="n">ERROR</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">CRITICAL</span> <span class="o">=</span> <span class="n">CRITICAL</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="gps_time.logutils.ThemeField.__setitem__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__setitem__</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Sets a color value using [] = indexing to change value with Formatter
+record.level</p>
+<h5 id="gps_time.logutils.ThemeField.__setitem__--parameters">Parameters</h5>
+<p>key: str
+    Formatter record.level or string matching attribute name
+value: str
+    New color code to set the level to</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>gps_time/logutils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sets a color value using [] = indexing to change value with Formatter</span>
+<span class="sd">    record.level</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    key: str</span>
+<span class="sd">        Formatter record.level or string matching attribute name</span>
+<span class="sd">    value: str</span>
+<span class="sd">        New color code to set the level to</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="gps_time.logutils.color_text" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">color_text</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="o">*</span><span class="n">colors</span><span class="p">)</span></code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Applies color to a specific string and appends the color code to set the
+text to normal. Text can be various colors by adding more args for colors.</p>
+<h4 id="gps_time.logutils.color_text--parameters">Parameters</h4>
+<p>text: str
+    String to color
+colors: Tuple[str]
+    Any amount of color codes</p>
+<h4 id="gps_time.logutils.color_text--returns">Returns</h4>
+<p>str
+    Input string with each color in colors prepended to the string in
+    order with a Colors.normal trailing.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>gps_time/logutils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">color_text</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="n">colors</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Applies color to a specific string and appends the color code to set the</span>
+<span class="sd">    text to normal. Text can be various colors by adding more args for colors.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    text: str</span>
+<span class="sd">        String to color</span>
+<span class="sd">    colors: Tuple[str]</span>
+<span class="sd">        Any amount of color codes</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        Input string with each color in colors prepended to the string in</span>
+<span class="sd">        order with a Colors.normal trailing.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">colors</span><span class="p">:</span>
+        <span class="n">color</span> <span class="o">+=</span> <span class="n">c</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;nt&quot;</span><span class="p">:</span>  <span class="c1"># Windows (bleh)</span>
+        <span class="k">return</span> <span class="n">text</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">color</span> <span class="o">+</span> <span class="n">text</span> <span class="o">+</span> <span class="n">Colors</span><span class="o">.</span><span class="n">normal</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="gps_time.logutils.display_distro_statement" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">display_distro_statement</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">logger</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s1">&#39;critical&#39;</span><span class="p">)</span></code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Display a distro statement</p>
+<p>The purpose of this method is to produce a distribution statement in the
+logger messages. This statement is separated by a line before and after
+and the message is surrounded by asterisks.</p>
+<h4 id="gps_time.logutils.display_distro_statement--parameters">Parameters</h4>
+<p>msg : str
+    The distribution statement
+logger : logging.Logger
+    The logger that will be used
+level : str
+    The logging level. Valid values are 'critical', 'error', 'warning',
+    'info', and 'debug'. By default 'critical'.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>gps_time/logutils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">display_distro_statement</span><span class="p">(</span>
+    <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">logger</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;critical&quot;</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Display a distro statement</span>
+
+<span class="sd">    The purpose of this method is to produce a distribution statement in the</span>
+<span class="sd">    logger messages. This statement is separated by a line before and after</span>
+<span class="sd">    and the message is surrounded by asterisks.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    msg : str</span>
+<span class="sd">        The distribution statement</span>
+<span class="sd">    logger : logging.Logger</span>
+<span class="sd">        The logger that will be used</span>
+<span class="sd">    level : str</span>
+<span class="sd">        The logging level. Valid values are &#39;critical&#39;, &#39;error&#39;, &#39;warning&#39;,</span>
+<span class="sd">        &#39;info&#39;, and &#39;debug&#39;. By default &#39;critical&#39;.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">level</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;critical&quot;</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">,</span> <span class="s2">&quot;warning&quot;</span><span class="p">,</span> <span class="s2">&quot;info&quot;</span><span class="p">,</span> <span class="s2">&quot;debug&quot;</span><span class="p">):</span>
+        <span class="n">logger_method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="n">level</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid Logging Level for Distro Statement: </span><span class="si">{</span><span class="n">level</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">msg_str</span> <span class="o">=</span> <span class="s2">&quot;*** &quot;</span> <span class="o">+</span> <span class="n">msg</span> <span class="o">+</span> <span class="s2">&quot; ***&quot;</span>
+
+    <span class="n">logger_method</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+    <span class="n">logger_method</span><span class="p">(</span><span class="s2">&quot;*&quot;</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">msg_str</span><span class="p">))</span>
+    <span class="n">logger_method</span><span class="p">(</span><span class="n">msg_str</span><span class="p">)</span>
+    <span class="n">logger_method</span><span class="p">(</span><span class="s2">&quot;*&quot;</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">msg_str</span><span class="p">))</span>
+    <span class="n">logger_method</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.indexes"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
